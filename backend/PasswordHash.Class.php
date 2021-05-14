@@ -24,6 +24,14 @@
 # Obviously, since this code is in the public domain, the above are not
 # requirements (there can be none), but merely suggestions.
 #
+class Password {
+    public static function hashp($password) {
+        return password_hash($password, PASSWORD_DEFAULT, ['cost' => 15]);
+    }
+    public static function verify($password, $hash) {
+        return password_verify($password, $hash);
+    }
+}
 class PasswordHash {
 	var $itoa64;
 	var $iteration_count_log2;

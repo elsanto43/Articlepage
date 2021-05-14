@@ -331,14 +331,14 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+    header("location: ./login.php");
           }
       }else{
         //Se redicciona si es que no se cumple
         //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
       }
 
     }else{
@@ -346,7 +346,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin");
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
     }
 
 

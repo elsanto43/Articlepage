@@ -87,7 +87,7 @@ public function newProject(){
 		
 		//si todo esta ok, lo redirecciona a viewproject.php
 		echo    "<script type=\"text/javascript\">
-							window.location=\"".$uri."/viewproject.php?id='".$idnew."'\"
+							window.location=./../viewproject.php?id='".$idnew."'\"
 							</script>";
 	}
 		
@@ -172,7 +172,7 @@ class viewproject{
 				return $printstr;
 			}else{
 				echo    "<script type=\"text/javascript\">
-						window.location=\"".$uri."/account.php\"
+						window.location=./../account.php\"
 						</script>";
 
 			}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-05-2021 a las 16:28:31
+-- Tiempo de generación: 14-05-2021 a las 08:03:03
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 7.3.27
 
@@ -24,12 +24,42 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tb_classes`
+--
+
+CREATE TABLE `tb_classes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(77) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tb_classes`
+--
+
+INSERT INTO `tb_classes` (`id`, `name`) VALUES
+(1, 'Sports'),
+(2, 'Videogames'),
+(3, 'Beauty and woman care'),
+(4, 'Politics'),
+(5, 'ONG and activism'),
+(6, 'Home & garden'),
+(7, 'Wellness and business'),
+(8, 'Computers & electronics'),
+(9, 'Natural medicine and health'),
+(10, 'Music & arts');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tb_projects`
 --
 
 CREATE TABLE `tb_projects` (
   `id` int(55) NOT NULL,
   `user_id` int(55) NOT NULL,
+  `editor_id` int(55) DEFAULT 0,
+  `published` text NOT NULL,
+  `ispublished` int(1) NOT NULL DEFAULT 0,
   `name` varchar(70) DEFAULT NULL,
   `date` varchar(33) DEFAULT current_timestamp(),
   `description` varchar(255) DEFAULT NULL,
@@ -37,23 +67,23 @@ CREATE TABLE `tb_projects` (
   `type` int(4) DEFAULT NULL,
   `class` int(20) DEFAULT NULL,
   `state` int(3) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tb_projects`
 --
 
-INSERT INTO `tb_projects` (`id`, `user_id`, `name`, `date`, `description`, `num_articles`, `type`, `class`, `state`) VALUES
-(1, 2, 'Project test', '13/02/2021', 'I need an article that describes the procces of making a new project', 0, 2, 3, 2),
-(2, 1, 'Project test 1', '13/02/2021', 'I need an article that describes the procces of making a new project', 0, 3, 1, 1),
-(3, 1, 'Project test 2', '13/02/2021', 'I need an article that describes the procces of making a new project', 0, 3, 2, 3),
-(18, 1, 'Juanete Debasdw', '03/05/2021', 'avvvvvvvvvvvvvvvvvvvvv', 1, 1, 1, 1),
-(19, 1, 'Juanete', '03/05/2021', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 1, 2, 2, 1),
-(20, 1, 'Juanete', '03/05/2021', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 1, 2, 2, 1),
-(21, 1, 'adddddddddddddddd', '03/05/2021', 'ddaaaaaaaaaaaaaaaaaaaaaaaa', 1, 3, 6, 1),
-(22, 1, 'aaaaaaaaaa', '03/05/2021', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, 3, 3, 1),
-(23, 1, 'aaaaaaaaaa', '03/05/2021', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, 3, 3, 1),
-(24, 15, 'adddddddddddddddd', '06/05/2021', 'asdasd', 1, 1, 3, 1);
+INSERT INTO `tb_projects` (`id`, `user_id`, `editor_id`, `published`, `ispublished`, `name`, `date`, `description`, `num_articles`, `type`, `class`, `state`) VALUES
+(1, 2, 23, '                                                                                                                                                <p>                                                                                                                                      Place <em>some</em> <u>text a<font color=\"#000000\" style=\"background-color: rgb(255, 255, 0);\">aaaaaaaa ASDASDwadw</font><font color=\"#000000\" style=\"background-color: rgb(0, 255, 0);\">asdasd</font><font color=\"#000000\" style=\"background-color: rgb(0, 0, 255);\">asdasd</font></u><span style=\"font-family: Verdana;\">asdasd</span></p><p><span style=\"font-family: Verdana;\"><br></span></p><h1><span style=\"font-family: Verdana;\">asdasd</span><span style=\"font-family: Impact;\">AASD</span></h1>                                                                                                                                ', 1, 'Project test', '13/02/2021', 'I need an article that describes the procces of making a new project', 0, 2, 3, 1),
+(2, 1, 0, '', 0, 'Project test 1', '13/02/2021', 'I need an article that describes the procces of making a new project', 0, 3, 1, 1),
+(3, 1, 0, '', 0, 'Project test 2', '13/02/2021', 'I need an article that describes the procces of making a new project', 0, 3, 2, 3),
+(18, 1, 0, '', 0, 'Juanete Debasdw', '03/05/2021', 'avvvvvvvvvvvvvvvvvvvvv', 1, 1, 1, 1),
+(19, 1, 0, '', 0, 'Juanete', '03/05/2021', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 1, 2, 2, 1),
+(20, 1, 0, '', 0, 'Juanete', '03/05/2021', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 1, 2, 2, 1),
+(21, 1, 0, '', 0, 'adddddddddddddddd', '03/05/2021', 'ddaaaaaaaaaaaaaaaaaaaaaaaa', 1, 3, 6, 1),
+(22, 1, 0, '', 0, 'aaaaaaaaaa', '03/05/2021', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, 3, 3, 1),
+(23, 1, 0, '', 0, 'aaaaaaaaaa', '03/05/2021', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, 3, 3, 1),
+(24, 15, 0, '', 0, 'adddddddddddddddd', '06/05/2021', 'asdasd', 1, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -64,30 +94,33 @@ INSERT INTO `tb_projects` (`id`, `user_id`, `name`, `date`, `description`, `num_
 CREATE TABLE `tb_users` (
   `id` int(11) NOT NULL,
   `role_id` int(2) DEFAULT NULL,
-  `name` varchar(70) CHARACTER SET utf8 DEFAULT NULL,
-  `email` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
-  `passwd` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `recoveryCode` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `name` varchar(70) DEFAULT NULL,
+  `email` varchar(40) DEFAULT NULL,
+  `passwd` varchar(255) DEFAULT NULL,
+  `recoveryCode` varchar(255) DEFAULT NULL,
   `pendant_project` int(11) DEFAULT 0,
   `editor_saved` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tb_users`
 --
 
 INSERT INTO `tb_users` (`id`, `role_id`, `name`, `email`, `passwd`, `recoveryCode`, `pendant_project`, `editor_saved`) VALUES
-(1, 2, 'Santi Mamani ', 'santi@gmail.com', 'test12345', NULL, 2, 'asdlas'),
-(2, 1, 'Carlitos', 'carlos@gmail.com', 'asd1234', '1444', 0, ''),
-(3, 1, 'asdasd', 'a@a.a', 'asdasd1', '1444', 0, ''),
-(12, 1, 'Milagros asd', 'caca@igmail.comasdaff', 'asdasd', '0', 0, ''),
-(13, 1, 'Milagros asd', 'caca@igmail.comasdaffg', 'asdasd', '0', 0, ''),
-(14, 1, 'Milagros asd', 'caca@hotmail.com', 'asdasd', '0', 0, ''),
-(15, 1, 'Milagros', 'asd@a.aAAa', 'asdasd', '0', 0, '');
+(1, 3, 'Santi Mamani ', 'santi@gmail.com', '$2y$15$PWACg6Ner2sMd7diPOPvRuNWPXifjdbAvPw4UZmYZJ5BiQnRqNauG', NULL, 2, '                                                                                                                                                <p>                                                                                                                                      Place <em>some</em> <u>text a<font color=\"#000000\" style=\"background-color: rgb(255, 255, 0);\">aaaaaaaa ASDASDwadw</font><font color=\"#000000\" style=\"background-color: rgb(0, 255, 0);\">asdasd</font><font color=\"#000000\" style=\"background-color: rgb(0, 0, 255);\">asdasd</font></u><span style=\"font-family: Verdana;\">asdasd</span></p><p><span style=\"font-family: Verdana;\"><br></span></p><h1><span style=\"font-family: Verdana;\">asdasd</span><span style=\"font-family: Impact;\">AASD</span></h1>                                                                                                                                '),
+(2, 1, 'Carlitos', 'carlos@gmail.com', '$2y$15$UVQk4QUnrWGtQhnzLw7nJOqas6hyQbCIPoq0RyNmCjgfyYfvbWJQO', '1444', 0, ''),
+(3, 1, 'asdasd', 'a@a.a', '$2y$15$cPL6BQt08MI9.hmff6p8AuKhy/EMN2IeIC9qKHCSG4SF3dn.e7wAK', '1444', 0, ''),
+(4, 2, 'Milagros Hash', 'hash@a.a', '$2y$15$FehhOiW8Vi8dCuujaslNQ.MaJpm7z/Ca4ibkzU0MPDIjI1scMAsRe', '0', 1, '');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `tb_classes`
+--
+ALTER TABLE `tb_classes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `tb_projects`
@@ -106,6 +139,12 @@ ALTER TABLE `tb_users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `tb_classes`
+--
+ALTER TABLE `tb_classes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT de la tabla `tb_projects`
 --
 ALTER TABLE `tb_projects`
@@ -115,9 +154,12 @@ ALTER TABLE `tb_projects`
 -- AUTO_INCREMENT de la tabla `tb_users`
 --
 ALTER TABLE `tb_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+

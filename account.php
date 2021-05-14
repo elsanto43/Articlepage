@@ -2,6 +2,7 @@
 session_start();
 require_once 'backend/PasswordHash.Class.php';
 require_once 'backend/utils.php';
+require_once 'backend/projects.php';
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -213,15 +214,56 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   <p>Finish your pending proyect to take a new one</p>
                   <a href="editor.php" class="btn btn-primary">Go to editor</a>
                 </blockquote>';
-                }
-                
-            }
-            if (($roles == 2) && ($haspending == true)) {
+                ?>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Current project</h3>
 
-            }else{
-              
-            
-            ?>
+                        <div class="card-tools">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                          </button>
+                          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- /.card-header -->
+                      
+                      <div class="card-body p-0">
+                      
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                          <form id="project" action="">
+                            <?php 
+                                    $kale = new viewproject();
+                                    echo  $kale->printViewProject(userF::has_pending_proyect($IDusr),$IDusr) ; 
+                                    ?>
+                            
+                            <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
+                            /.row -->
+                            
+                          </form>
+                        </div>
+                      
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <?php
+                      }
+                      
+                  }
+                  if (($roles == 2) && ($haspending == true)) {
+
+                  }else{
+                    
+                  
+                  ?>
           
             <div class="card">
               <div class="card-header">
@@ -311,23 +353,24 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 </html>
 <?php
         }else{
-          echo    "<script type=\"text/javascript\">
-          window.location=\"".$uri."/admin/admin.php\"
-          </script>";
+          echo     "<script>
+						 
+					window.location.replace('./admin/admin.php'); 
+					</script>";
         }
        }else{
      //Se redicciona si es que no se cumple
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
           }
       }else{
         //Se redicciona si es que no se cumple
         //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
       }
 
     }else{
@@ -335,7 +378,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin");
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
     }
 
 

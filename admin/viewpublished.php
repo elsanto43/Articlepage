@@ -2,6 +2,7 @@
 session_start();
 require_once '../backend/PasswordHash.Class.php';
 require_once '../backend/utils.php';
+require_once '../backend/projects.php';
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -103,7 +104,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
           <li class="nav-item">
             
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="admin.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
                 <b>Administration</b>
@@ -145,120 +146,87 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Pending aprovation</h3>
+      <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title">Published article</h3>
 
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <!-- /.card-header -->
+                    
+                    <div class="card-body p-0">
+                    
+                    <!-- /.card-header -->
+                        <div class="card-body">
+                            <p>
+                            <?php    
+                                echo userF::showPublished($_GET['id']);
+                            ?></p>
+                            
+                        </div>
+                    
+                    </div>
+
+                    <div class="card-footer">
+                        
+                        <button name="boton" value="a" type="submit" id="saveData" style="width:48%; float:left;" class="btn btn-success float-center">Approve</button>
+                        <a href="account.php" style="width:48%; float: right;" class="btn btn-danger float-center">Deny article</a>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
-              </div>
-              <!-- /.card-header -->
-              
-              <div class="card-body p-0">
-              
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                    <th>ID</th>
-                      
-                      <th>Name</th>
-                      <th>Date</th>
-                      <th>Class</th>
-                      <th>Status</th>
-                      <th>Description</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php echo userF::list_pending_aprov_Projects(); ?>
-                   
-                  </tbody>
-                </table>
-              </div>
-              
-              </div>
-              <!-- /.card-body -->
-            </div>
             <!-- /.card -->
-          </div>
+            </div>
         </div>
         <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">All entrys</h3>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title">Project data</h3>
 
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <!-- /.card-header -->
+                    
+                    <div class="card-body p-0">
+                    
+                    <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="project" action="">
+                            <?php 
+                                    $kale = new viewproject();
+                                    echo  $kale->printViewProject(userF::has_pending_proyect($IDusr),$IDusr) ; 
+                                    ?>
+                            
+                            <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
+                            /.row -->
+                            
+                            </form>
+                        </div>
+                    
+                    </div>
+                    <!-- /.card-body -->
                 </div>
-              </div>
-                <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                    <th>ID</th>
-                      
-                      <th>Name</th>
-                      <th>Date</th>
-                      <th>Class</th>
-                      <th>Status</th>
-                      <th>Description</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php echo userF::list_Projects($roles); ?>
-                   <!-- <tr>
-                      <td>183</td>
-                      <td>11-7-2014</td>
-                      <td>Sports</td>
-                      <td><span class="badge bg-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>219</td>
-                      <td>11-7-2014</td>
-                      <td>Videogames</td>
-                      <td><span class="badge bg-warning">Pending</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>657</td>
-                      <td>11-7-2014</td>
-                      <td>Education</td>
-                      <td><span class="badge bg-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>175</td>
-                      <td>11-7-2014</td>
-                      <td>Sports</td>
-                      <td><span class="badge bg-danger">Denied</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>-->
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
             <!-- /.card -->
-          </div>
+            </div>
         </div>
-      </div>
+
+        
     </section>
     <!-- /.content -->
   </div>

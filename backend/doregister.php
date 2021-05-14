@@ -82,9 +82,9 @@ class Register{
                     $this->Mensaje='<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>This email is in use</div>';
                     
 				}else { //el email no esta en uso, registramos el usuario.
-					
+					$passwdhashed = Password::hashp($this->Contrasena_);
                     $query    = "INSERT INTO tb_users
-								(`id`, `role_id`, `name`, `email`, `passwd`, `recoveryCode`, `pendant_project`, `editor_saved`) VALUES (NULL, '1', '$this->Nombre_usr', '$mailfilter', '$this->Contrasena_', '0', '0','');";
+								(`id`, `role_id`, `name`, `email`, `passwd`, `recoveryCode`, `pendant_project`, `editor_saved`) VALUES (NULL, '1', '$this->Nombre_usr', '$mailfilter', '$passwdhashed', '0', '0','');";
 					
                     $mysql->query($query); //verificar que se realizo correctamente la consulta!!!!!!!!!
 					
@@ -108,8 +108,9 @@ class Register{
 						  "hora"  =>$hora,
 						  "role"  => '1'); 
                    
-					echo    "<script type=\"text/javascript\">
-						  window.location=\"".$uri."/account.php\";
+					echo    "<script>
+						 
+						  window.location.replace('./account.php'); 
 						  </script>";
                 }
 			}

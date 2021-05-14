@@ -59,23 +59,26 @@ class Login{
 				// "<script type=\"text/javascript\">
 				// window.location=\"".$uri."/wp-admin/admin.php\";
 				// </script>";
-				if ($roleid == "3"){
+				
+				if ($this->roleid == "3"){ 
 
-					echo    "<script type=\"text/javascript\">
-							window.location=\"".$uri."/admin/admin.php\"
-							</script>";
+					echo     "<script>
+						 
+					window.location.replace('./admin/admin.php'); 
+					</script>";
 
-				}elseif ($roleid == "2"){
-					echo    "<script type=\"text/javascript\">
-							window.location=\"".$uri."/account.php\";
-							</script>";
+							
 
-				}elseif ($roleid == "1"){
-					echo    "<script type=\"text/javascript\">
-							window.location=\"".$uri."/account.php\";
-							</script>";
+				}elseif ($this->roleid == "2"){
+					echo     "<script>
+					window.location.replace('./account.php'); 
+					</script>";
+
+				}elseif ($this->roleid == "1"){
+					echo     "<script>
+					window.location.replace('./account.php'); 
+					</script>";
 				}
-
 			} 
 		}
 	}
@@ -170,32 +173,34 @@ class Login{
 					$Hashing 			= $Contrasena->HashPassword($row[1]);
 						
 						//Realizamos el comparacion del paswrod con la instrccion if
-					if($Contrasena->CheckPassword($contra, $Hashing)){
-						//Recuparamos el Id del usuario
-						$idsur              =$row[3];
-						//Recuperamos el nombre de usuario para imprimir
-						$this->Nombre_usr    = $row[2];
+					//if($Contrasena->CheckPassword($contra, $Hashing)){
+					if (Password::verify($contra, $row[1])) {
+							//Recuparamos el Id del usuario
+							$idsur              =$row[3];
+							//Recuperamos el nombre de usuario para imprimir
+							$this->Nombre_usr    = $row[2];
 
-							$roleid = $row[4];
-						//Recuperando el IP del usuario atravez del metodo IPuser()  
-						$IpUsr               = $this->IPuser();
-						//Recuperando la hora en el que ingreso
-						$hora                = time();
-						//Recuperamos recuperando los dados para incriptar
-						$Clave = $Contrasena->HashPassword($idsur.$IpUsr.$this->Nombre_usr.$hora); 
-						//Registrando a la varaible global datos en un arreglo para iniciar session
-						$_SESSION['INGRESO'] = array(
-							"Id"    =>$idsur,
-							"Ip"    =>$IpUsr,
-							"Clave" =>$Clave,
-							"Nombre"=>$this->Nombre_usr,
-							"hora"  =>$hora,
-							"role"  =>$roleid); 
+							$this->roleid = $row[4];
+							//Recuperando el IP del usuario atravez del metodo IPuser()  
+							$IpUsr               = $this->IPuser();
+							//Recuperando la hora en el que ingreso
+							$hora                = time();
+							//Recuperamos recuperando los dados para incriptar
+							$Clave = $Contrasena->HashPassword($idsur.$IpUsr.$this->Nombre_usr.$hora); 
+							//Registrando a la varaible global datos en un arreglo para iniciar session
+							$_SESSION['INGRESO'] = array(
+								"Id"    =>$idsur,
+								"Ip"    =>$IpUsr,
+								"Clave" =>$Clave,
+								"Nombre"=>$this->Nombre_usr,
+								"hora"  =>$hora,
+								"role"  =>$this->roleid); 
 
-						//Asignamos el valor verdadero para retornarlo
-						$retornar           = true;
+							//Asignamos el valor verdadero para retornarlo
+							$retornar           = true;
+						
 					}else {
-						$this->Mensaje ='<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>';
+						$this->Mensaje ='<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Your password is incorrect</div>';
 						$retornar      =false; //El paswor ingresado no es correcto
 					}
 						

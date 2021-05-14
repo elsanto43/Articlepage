@@ -35,6 +35,7 @@
                     if(!$mysql){
                         
                     }else{
+                        if ($_POST['mydata'] == "a") { //El boton solo guarda el borrador, no publica el articulo
                         //consulta SQL para vereficar si existe tal correo del
                         //usario que introdujo 
                             $query    = "UPDATE
@@ -51,9 +52,16 @@
                             //    $hasproject              =$row[0];
                                 
                             
-                            //}
+                        }else{ //boton b, publica el articulo, para ser aprobado por el administrador
+                            $query    = "UPDATE
+                                        tb_projects SET published = '".$_POST['mydata']."', ispublished = '1'
+                                        
+                                        WHERE tb_projects.editor_id='".$IDusr. "';";
+                           $mysql->query($query);
+                        }
                     }
-                    header("location: ".$uri . "/editor.php");
+                    
+                    header("location: ./../editor.php");
                 }
             }
         }

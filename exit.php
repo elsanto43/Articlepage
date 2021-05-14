@@ -13,5 +13,5 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
 	  session_destroy();
-    header("location: ".$uri . "/login.php");		   
+    header("location: ./login.php");		   
  ?>

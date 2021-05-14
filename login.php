@@ -18,21 +18,14 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
  if(!empty($_SESSION['INGRESO'])){
     if(count($_SESSION['INGRESO'])>0){
       $roleid		=$_SESSION['INGRESO']["role"];
-      if ($roleid = "3"){
-
-				echo    "<script type=\"text/javascript\">
-						window.location=\"".$uri."/admin/admin.php\"
-						</script>";
-
-			}elseif ($roleid = "2"){
-				echo    "<script type=\"text/javascript\">
-						window.location=\"".$uri."/account.php\";
-						</script>";
-
-			}elseif ($roleid = "1"){
-				echo    "<script type=\"text/javascript\">
-						window.location=\"".$uri."/account.php\";
-						</script>";
+      if ($roleid == "3"){
+            header("location: ./admin/admin.php");	
+			}elseif ($roleid == "2"){
+				
+            header("location: ./account.php");	
+			}elseif ($roleid == "1"){
+        header("location: ./account.php");	
+      
 			}
 
 

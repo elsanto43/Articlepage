@@ -23,7 +23,7 @@ class Utils {
 class userF {
     private $liststr       ="";
 
-    public static function has_pending_proyect($id) {
+    public static function has_pending_proyect($uid) {
         $confi=new Datos_conexion();
 	 	$mysql=new mysqli($confi->host(),$confi->usuario(),$confi->pasword(),$confi->DB());
         //Determinamos si la conexion a la bd es correcto.
@@ -32,29 +32,29 @@ class userF {
 		}else{
 	 		//consulta SQL para vereficar si existe tal correo del
 	 		//usario que introdujo 
-	 		  $query    = "SELECT
+	 		$query    = "SELECT
 							tb_users.pendant_project
 							FROM
 							tb_users
-							WHERE tb_users.id='".$id. "';";
-	 		    $respuesta = $mysql->query($query);
-	 		    //Aqui determinamos con la instruccion if
-	 		    //la consulta generada, si mayor a cero
-	 		    //retornamos el valor verdadero
-	 		    //por el contrario mesaje de error
-	           if($respuesta->num_rows>0){
-                    $row     			= $respuesta->fetch_row();
-                    $hasproject              =$row[0];
-                    if ($hasproject <> 0) {
-                        return true;
-                    
-                    }else {
-                        return false;
-                    }
-	           		
-	           }else {
+							WHERE tb_users.id='".$uid. "';";
+            $respuesta = $mysql->query($query);
+            //Aqui determinamos con la instruccion if
+            //la consulta generada, si mayor a cero
+            //retornamos el valor verdadero
+            //por el contrario mesaje de error
+            if($respuesta->num_rows>0){
+                $row     			= $respuesta->fetch_row();
+                $hasproject              =$row[0];
+                if ($hasproject <> 0) {
+                    return $hasproject;
+                
+                }else {
                     return 0;
-			}
+                }
+                
+            }else {
+                return 0;
+            }
 	 	}
     }
 
@@ -145,8 +145,78 @@ class userF {
         }
 
     }
+    public function showPublished($id){
+        $confi=new Datos_conexion();
+	 	$mysql=new mysqli($confi->host(),$confi->usuario(),$confi->pasword(),$confi->DB());
+        //Determinamos si la conexion a la bd es correcto.
+	 	if(!$mysql){
+			return 0;
+		}else{
+	 		//consulta SQL para vereficar si existe tal correo del
+	 		//usario que introdujo 
+	 		  $query    = "SELECT
+							tb_projects.published
+							FROM
+							tb_projects
+							WHERE tb_projects.id='".$id. "';";
+	 		 $respuesta = $mysql->query($query);
+	 		    //Aqui determinamos con la instruccion if
+	 		    //la consulta generada, si mayor a cero
+	 		    //retornamos el valor verdadero
+	 		    //por el contrario mesaje de error
+	           if($respuesta->num_rows>0){
+                    $row     			= $respuesta->fetch_row();
+                    
+	           		return $row[0];// se retorna el texto
+	           		
+	           }else {
+                    return 0;
+			}
+	 	}
+    }
+    public function list_pending_aprov_Projects(){
+        $IDusr		=$_SESSION['INGRESO']["Id"];
+        
+        $confi=new Datos_conexion();
+        $mysql=new mysqli($confi->host(),$confi->usuario(),$confi->pasword(),$confi->DB());
+        $roleid = userF::get_role($IDusr);
+        //Determinamos si la conexion a la bd es correcto.
+        if($mysql->connect_errno){
+            $this->Mensaje='<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Error! Server of data not found</div>';
+            exit;
+        }else{
+            if ($roleid == 3){
+                //si es un admin mostramos los proyectos pendientes a aprobar
+                $query    = "SELECT * FROM tb_projects WHERE tb_projects.ispublished='1';";
+            }
+                $respos = $mysql->query($query);
+                $liststr  = "";
+                $tmpstr = "";
+                while ($arr = $respos->fetch_assoc()){
+                    $tmpstr =  $arr['class'];
+                    if (strlen($arr['description']) > 33) {
+                        $formatstr = substr($arr['description'],0,33) . "...";
+                    }else{
+                        $formatstr = $arr['description'];
+                    }
+                    
+                    $liststr = $liststr . "<tr> <td>" . $arr['id'] . //id
+                                "</td> <td>" . $arr['name'] .  //name
+                                "</td> <td>" . $arr['date'] . //date
+                                "</td> <td>" . userF::get_class_name($tmpstr, $mysql) . //class
+                                "</td> <td>" . userF::get_status_app($arr['state']) . //status
+                                "</td> <td>" . $formatstr . '</td> <td> 
+                                <a style="width: 150px;" href="viewpublished.php?id='.$arr['id'].'"><button type="button" class="btn btn-secondary btn-block btn-sm">Watch article</button></a>' . "</td></tr>" ;//cerramos el item
+                
+                }
+            
+                return $liststr;
+                
+            
+        }
 
-    public function list_Projects($roleid){
+    }
+    public function list_Projects(){
         $IDusr		=$_SESSION['INGRESO']["Id"];
         
         $confi=new Datos_conexion();
@@ -162,7 +232,7 @@ class userF {
                 $query    = "SELECT * FROM tb_projects WHERE tb_projects.user_id='".$IDusr."';";
                 
             }elseif ($roleid == 2){ //ees editor
-                $query    = "SELECT * FROM tb_projects WHERE tb_projects.state='1';";
+                $query    = "SELECT * FROM tb_projects WHERE tb_projects.editor_id='0' AND tb_projects.state=1;";
                 
             
             }elseif ($roleid == 3){ //ees admin

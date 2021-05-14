@@ -30,10 +30,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
           $roles = userF::get_role($IDusr);
-            if ($roles == 1) {
-                echo    "<script type=\"text/javascript\">
-						window.location=\"".$uri."/account.php\"
-						</script>";
+            if ($roles == "1") {
+              header("location: ./account.php");	
             }
 	       ?>
 <!DOCTYPE html>
@@ -41,21 +39,21 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project editor</title>
+  <title>Project editor </title>
 
  <!-- Google Font: Source Sans Pro -->
  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- summernote -->
-  <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   <!-- CodeMirror -->
-  <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css">
-  <link rel="stylesheet" href="../../plugins/codemirror/theme/monokai.css">
+  <link rel="stylesheet" href="plugins/codemirror/codemirror.css">
+  <link rel="stylesheet" href="plugins/codemirror/theme/monokai.css">
   <!-- SimpleMDE -->
-  <link rel="stylesheet" href="../../plugins/simplemde/simplemde.min.css">
+  <link rel="stylesheet" href="plugins/simplemde/simplemde.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed">
 <!-- Site wrapper -->
@@ -102,7 +100,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link elevation-4">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">AdminLTE 3 </span>
     </a>
 
     <!-- Sidebar -->
@@ -210,6 +208,45 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <!-- Main content -->
     <section class="content">
       <div class="row">
+        <div class="col-12">
+          <div class="card collapsed-card">
+            <div class="card-header">
+              <h3 class="card-title">Current project</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            
+            <div class="card-body p-0">
+            
+              <!-- /.card-header -->
+              <div class="card-body">
+                <form id="project" action="">
+                  <?php 
+                          $kale = new viewproject();
+                          echo  $kale->printViewProject(userF::has_pending_proyect($IDusr),$IDusr) ; 
+                          ?>
+                  
+                  <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
+                  /.row -->
+                  
+                </form>
+              </div>
+            
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-12">
           <div class="card card-outline card-info">
             <div class="card-header">
@@ -219,13 +256,17 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <textarea id="summernote">
-                <?php echo userF::get_text_saved($IDusr);?>
-              </textarea>
+              <form action="backend/saveeditor.php" method="POST">
+                <textarea id="summernote" name="mydata">
+                  <?php echo userF::get_text_saved($IDusr);?>
+                </textarea>
 
-              <button id="saveData" style="width:48%; float:left;" class="btn btn-primary float-center">Save</button> 
-            
-              <a href="account.php" style="width:48%; float: right;" class="btn btn-secondary float-center">Cancel</a>
+                <button name="boton" value="a" type="submit" id="saveData" style="width:48%; float:left;" class="btn btn-primary float-center">Save</button> 
+                
+                <a href="account.php" style="width:48%; float: right;" class="btn btn-secondary float-center">Cancel</a>
+                
+                <button name="boton" value="b" type="submit" id="saveData" style="margin-top:14px; width:100%; float:left;" class="btn btn-success float-center">Publish article</button> 
+              </form>
             </div>
             <div class="card-footer">
               
@@ -264,16 +305,9 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-
 <!-- Summernote -->
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- CodeMirror -->
-<script src="plugins/codemirror/codemirror.js"></script>
-<script src="plugins/codemirror/mode/css/css.js"></script>
-<script src="plugins/codemirror/mode/xml/xml.js"></script>
-<script src="plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
@@ -284,43 +318,17 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     // Summernote
     $('#summernote').summernote()
 
-    // CodeMirror
-    CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
-      mode: "htmlmixed",
-      theme: "monokai"
-    });
   })
 
   
-$(document).on("click","#saveData", function(){
-      var myData = $('#summernote').summernote('code');
-      document.body.innerHTML += '<form id="dynForm" action="backend/saveeditor.php" method="post"><input type="hidden" name="mydata" value="'+myData+'"></form>';
-      document.getElementById("dynForm").submit();
+//$(document).on("click","#saveData", function(){
+//      var myData = $('#summernote').summernote('code');
+//      document.body.innerHTML += '<form id="dynForm" action="backend/saveeditor.php" method="post"><input type="hidden" name="mydata" value="'+myData+'"></form>';
+//      document.getElementById("dynForm").submit();
  
-});
+//});
+//Este codigo quedo obsoleto, ahora se hace todo desde HTML.
 
-function post(path, params, method='post') {
-
-// The rest of this code assumes you are not using a library.
-// It can be made less verbose if you use one.
-const form = document.createElement('form');
-form.method = method;
-form.action = path;
-
-for (const key in params) {
-  if (params.hasOwnProperty(key)) {
-    const hiddenField = document.createElement('input');
-    hiddenField.type = 'hidden';
-    hiddenField.name = key;
-    hiddenField.value = params[key];
-
-    form.appendChild(hiddenField);
-  }
-}
-
-document.body.appendChild(form);
-form.submit();
-}
 </script>
 </body>
 </html>
@@ -331,14 +339,14 @@ form.submit();
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
           }
       }else{
         //Se redicciona si es que no se cumple
         //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
       }
 
     }else{
@@ -346,7 +354,7 @@ form.submit();
       //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin");
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
     }
 
 

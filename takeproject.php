@@ -35,7 +35,7 @@
                     //procesamos la accion de tomar el proyecto.
                     $haspending = userF::has_pending_proyect($IDusr);
                     if ($haspending == true) {
-                        header("location: ".$uri . "/account.php");	//ya tiene un proyecto pendiente
+                        header("location: ./account.php");	//ya tiene un proyecto pendiente
                     }else{
                         $confi=new Datos_conexion();
                         $mysql=new mysqli($confi->host(),$confi->usuario(),$confi->pasword(),$confi->DB());
@@ -49,14 +49,26 @@
                                             tb_users SET
                                             pendant_project = " . $_GET['id']. "
                                             WHERE tb_users.id='".$IDusr. "';";
-                                $mysql->query($query);
-                                
-                            header("location: ".$uri . "/account.php");	//ya tiene un proyecto pendiente
+                            $mysql->query($query); //seteamos el id de proyecto pendiente en la data del usuario
+                            
+                            $query =  "UPDATE
+                            tb_projects SET
+                            editor_id = " . $IDusr. "
+                            WHERE tb_projects.id='".$_GET['id']. "';";
+                            $mysql->query($query); //el id del editor se modifica en la tabla de proyectos
+                            
+                            header("location: ./account.php");	//ya tiene un proyecto pendiente
                         }
                     }
                 }
+            }else{
+                header("location: ./exit.php");
             }
+        }else{
+            header("location: ./login.php");
         } //session > 0
+    }else{
+        header("location: ./login.php");
     } //!empty session
     
 ?>

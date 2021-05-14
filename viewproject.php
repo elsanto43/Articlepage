@@ -234,7 +234,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="row">
+        <div class="row">
           <div class="col-12">
             <div class="card">
               <div class="card-header">
@@ -252,38 +252,38 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   </div>
                 </div>
               </div>
-<!-- /.card-header -->
+              <!-- /.card-header -->
               
-        <div class="card card-default">
-         
-          <!-- /.card-header -->
-          <div class="card-body">
-            <form id="project" action="">
-            <?php 
-                      $kale = new viewproject();
-                      echo  $kale->printViewProject($_GET['id'],$IDusr) ; 
-                      ?>
+              <div class="card card-default">
               
-              <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
-               /.row -->
-              <div class="row">
-                <div class="col-12">
-                  <a href="account.php" class="btn btn-secondary">Go back</a>
-                  <?php if ($roles == 1) {
-                          
-                  }elseif ($roles == 2) {
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <form id="project" action="">
+                    <?php 
+                            $kale = new viewproject();
+                            echo  $kale->printViewProject($_GET['id'],$IDusr) ; 
+                            ?>
+                    
+                    <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
+                    /.row -->
+                    <div class="row">
+                      <div class="col-12">
+                        <a href="account.php" class="btn btn-secondary">Go back</a>
+                        <?php if ($roles == 1) {
+                                
+                        }elseif ($roles == 2) {
 
-                      echo '<a disabled="" href="takeproject.php?id='.$_GET['id'].'" class="btn btn-primary float-right">Take this project</a>';
-                  }
-                    ?>
-                  
+                            echo '<a disabled="" href="takeproject.php?id='.$_GET['id'].'" class="btn btn-primary float-right">Take this project</a>';
+                        }
+                          ?>
+                        
 
+                      </div>
+                    </div>
+                  </form>
                 </div>
+              
               </div>
-            </form>
-          </div>
-        
-        </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -331,14 +331,14 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+    header("location: ./login.php");
           }
       }else{
         //Se redicciona si es que no se cumple
         //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin"); 
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
       }
 
     }else{
@@ -346,7 +346,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       //Modificar como en la siguiete linea de codigo
         //si es que esta en un subdirectorio
         // header("location: ".$uri."/wp-admin");
-        header("location: ".$uri . "/login.php");
+        header("location: ./login.php");
     }
 
 

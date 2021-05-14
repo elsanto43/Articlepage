@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'backend/PasswordHash.Class.php';
+require_once 'backend/utils.php';
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -23,6 +24,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      //se uni los datos para verificar
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
+          $roles = userF::get_role($IDusr);
+          if ($roles == "1") {
 	       ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -121,19 +124,20 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               <a href="account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
-                  My account
+                My account
                   
                 </p>
               </a>
             </li>
+
             <li class="nav-item">
-              <a href="newproject.php" class="nav-link">
-                <i class="nav-icon fas fa-edit"></i>
-                
-                <p>New project</p>
-              </a>
-            </li>
-            <li class="nav-item over">
+                <a href="newproject.php" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
+                  
+                  <p>New project</p>
+                </a>
+              </li>
+              <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>
                 <p>
@@ -142,10 +146,11 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </p>
               </a>
             </li>
+            
+            
           </li>
-          
           <li class="nav-item">
-            <a href="index.php" class="nav-link">
+            <a href="exit.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 <span class="left badge badge-danger">Close</span>
@@ -300,19 +305,22 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 </body>
 </html>
 <?php
+          }else{
+            header("location: ./account.php");
+          }
        }else{
      //Se redicciona si es que no se cumple
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-    header("location: ".$uri);
+    header("location: ./login.php");
        }
   }else{
   	//Se redicciona si es que no se cumple
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-    header("location: ".$uri);
+    header("location: ./login.php");
   }
 
  }else{
@@ -320,7 +328,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
  	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin");
-    header("location: ".$uri);
+    header("location: ./login.php");
  }
 
 
