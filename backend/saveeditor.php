@@ -35,33 +35,59 @@
                     if(!$mysql){
                         
                     }else{
-                        if ($_POST['mydata'] == "a") { //El boton solo guarda el borrador, no publica el articulo
+                        if ($_POST['boton'] == "a") { //El boton solo guarda el borrador, no publica el articulo
                         //consulta SQL para vereficar si existe tal correo del
                         //usario que introdujo 
-                            $query    = "UPDATE
-                                        tb_users SET editor_saved = '".$_POST['mydata']."'
-                                        
-                                        WHERE tb_users.id='".$IDusr. "';";
-                           $mysql->query($query);
-                            //Aqui determinamos con la instruccion if
-                            //la consulta generada, si mayor a cero
-                            //retornamos el valor verdadero
-                            //por el contrario mesaje de error
+                            if ($_POST['selected'] > 0) {
+                                $selected = $_POST['selected'];
+                                $query    = "UPDATE
+                                        tb_articles SET article = '".$_POST['mydata']."'
+                                        , name = '".$_POST['articlename']."'
+                                        WHERE tb_articles.id='".$selected. "';";
+
+                                        $mysql->query($query);
+
+                                header("location: ./../editor.php?edit=$selected");
+                            }else{ //Se crea un nuevo articulo
+                                $query = "INSERT INTO tb_articles (`id`, `name`, `user_id`, `article`) 
+                                            VALUES (NULL, '".$_POST['articlename']."', '$IDusr', '".$_POST['mydata']."');";
+                                $mysql->query($query);
+                                $newid = $mysql->insert_id;
+                                header("location: ./../editor.php?edit=$newid");
+                            }
+                            
+                           
                            // if($respuesta->num_rows>0){
                              //   $row     			= $respuesta->fetch_row();
                             //    $hasproject              =$row[0];
                                 
                             
                         }else{ //boton b, publica el articulo, para ser aprobado por el administrador
+                            
+                            $selected = $_POST['selected'];
+                            $currproject = userF::has_pending_proyect($IDusr);
+                            
                             $query    = "UPDATE
-                                        tb_projects SET published = '".$_POST['mydata']."', ispublished = '1'
-                                        
-                                        WHERE tb_projects.editor_id='".$IDusr. "';";
-                           $mysql->query($query);
+                                   tb_articles SET tb_articles.state=1, article = '".$_POST['mydata']."'
+                                   , name = '".$_POST['articlename']."', project_id='$currproject'
+                                   WHERE tb_articles.id='".$selected. "';";
+                            $mysql->query($query);
+                            //tambien actualizamos la tabla de proyectos, agregandolo a los articulos publicados.
+                            
+                            
+                            
+                            $published = userF::get_published_articles($currproject);
+                            if (strlen($published) > 0) {
+                                $published = $published . "-$selected";
+                            }else{
+                                $published = $selected;
+                            }
+                            $query = "UPDATE tb_projects SET tb_projects.ispublished='1', tb_projects.published='$published' WHERE tb_projects.id='$currproject'";
+                            $mysql->query($query);
+                            header("location: ./../editor.php");
                         }
                     }
                     
-                    header("location: ./../editor.php");
                 }
             }
         }

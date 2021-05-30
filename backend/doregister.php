@@ -83,35 +83,35 @@ class Register{
                     
 				}else { //el email no esta en uso, registramos el usuario.
 					$passwdhashed = Password::hashp($this->Contrasena_);
+					$tmpdate = date('d/m/Y');
                     $query    = "INSERT INTO tb_users
-								(`id`, `role_id`, `name`, `email`, `passwd`, `recoveryCode`, `pendant_project`, `editor_saved`) VALUES (NULL, '1', '$this->Nombre_usr', '$mailfilter', '$passwdhashed', '0', '0','');";
+								(`id`, `role_id`, `name`, `email`, `passwd`,  `startedon`, `recoveryCode`, `pendant_project`) VALUES (NULL, '1', '$this->Nombre_usr', '$mailfilter', '$passwdhashed', '$tmpdate', '0', '0');";
 					
-                    $mysql->query($query); //verificar que se realizo correctamente la consulta!!!!!!!!!
+                    if ($mysql->query($query) === true) {
+						$inicio=new Login($mailfilter,$this->Contrasena_);
+						$inicio->Ingresar();
+						$idsur              = ($mysql->insert_id);
+						//Recuperando el IP del usuario atravez del metodo IPuser()  
+						$IpUsr               = $this->IPuser();
+						//Recuperando la hora en el que ingreso
+						$hora                = time();
+						$Contrasena = new PasswordHash(8, FALSE);
+						//Recuperamos recuperando los dados para incriptar
+						$Clave = $Contrasena->HashPassword($idsur.$IpUsr.$this->Nombre_usr.$hora); 
+						//Registrando a la varaible global datos en un arreglo para iniciar session
+						$_SESSION['INGRESO'] = array(
+							"Id"    =>$idsur,
+							"Ip"    =>$IpUsr,
+							"Clave" =>$Clave,
+							"Nombre"=>$this->Nombre_usr,
+							"hora"  =>$hora,
+							"role"  => '1'); 
 					
-					
-                    $inicio=new Login($mailfilter,$this->Contrasena_);
-              		$inicio->Ingresar();
-					$idsur              = ($mysql->insert_id);
-					  //Recuperando el IP del usuario atravez del metodo IPuser()  
-					$IpUsr               = $this->IPuser();
-					  //Recuperando la hora en el que ingreso
-					$hora                = time();
-					$Contrasena = new PasswordHash(8, FALSE);
-					  //Recuperamos recuperando los dados para incriptar
-					$Clave = $Contrasena->HashPassword($idsur.$IpUsr.$this->Nombre_usr.$hora); 
-					  //Registrando a la varaible global datos en un arreglo para iniciar session
-					$_SESSION['INGRESO'] = array(
-						  "Id"    =>$idsur,
-						  "Ip"    =>$IpUsr,
-						  "Clave" =>$Clave,
-						  "Nombre"=>$this->Nombre_usr,
-						  "hora"  =>$hora,
-						  "role"  => '1'); 
-                   
-					echo    "<script>
-						 
-						  window.location.replace('./account.php'); 
-						  </script>";
+						echo    "<script>
+							
+							  window.location.replace('./account.php'); 
+							  </script>";
+					}
                 }
 			}
 		}else{

@@ -2,7 +2,6 @@
 session_start();
 require_once '../backend/PasswordHash.Class.php';
 require_once '../backend/utils.php';
-require_once '../backend/projects.php';
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -35,7 +34,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project details</title>
+  <title>Administration panel</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -67,7 +66,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <a href="#" class="nav-link">Support</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../exit.php" class="btn btn-danger">Exit</a>
+      <a href="../exit.php" class="btn btn-danger">Exit</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -104,8 +103,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          
-          <li class="nav-item">
+            <li class="nav-item">
               <a href="../account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
@@ -116,14 +114,22 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
             </li>
             <li class="nav-item">
               <a href="admin.php" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
+                <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                <b>Administration</b>
+                Administration
                   
                 </p>
               </a>
             </li>
-            
+            <li class="nav-item">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa">?</i>
+                <p>
+                <b>Support</b>
+                  
+                </p>
+              </a>
+            </li>
           <li class="nav-item">
             <a href="../exit.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
@@ -147,7 +153,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Administration</h1>
+            <h1>Support tickets</h1>
           </div>
 
         </div>
@@ -159,74 +165,54 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <!--<div class="card">
+                
+            <div class="card collapsed-card">
               <div class="card-header">
-                <h3 class="card-title">This is an article name</h3>
+                <h3 class="card-title">Support tickets</h3>
 
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                  
                 </div>
               </div>
+              <!-- /.card-header -->
+              
               <div class="card-body p-0">
-                  <div class="card-body">
-                      <p></p>
-                  </div>
+              
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Ticket ID</th>
+                      <th>Username(UID)</th>
+                      <th>Date</th>
+                      <th>State</th>
+                      <th>Ticket</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php echo userF::list_tickets(); ?>
+                   
+                  </tbody>
+                </table>
               </div>
               
-              <div class="card-footer">
-                  <button name="boton" value="a" type="submit" id="saveData" style="width:48%; float:left;" class="btn btn-success float-center">Approve</button>
-                  <a href="account.php" style="width:48%; float: right;" class="btn btn-danger float-center">Deny article</a>
               </div>
-            </div>-->
-            
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Project data</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    
-                </div>
-              </div>
-                    <!-- /.card-header -->
-                    
-              <div class="card-body p-0">
-                <div class="card-body">
-                  
-                    <?php
-                      $kale = new viewproject();
-                      echo  $kale->printViewProject($_GET['id'],$IDusr) ; 
-                    ?>
-                  
-                  <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
-                  /.row -->
-                  
-                  <a href="admin.php" style="width:100%; float: right;" class="btn btn-secondary float-left">Go back</a>
-                  
-                </div>
-              </div>
+              <!-- /.card-body -->
             </div>
-
-            <?php echo userF::showProjectArticles($_GET['id'], $IDusr) ; ?>
-              <!-- /.card -->
+            <!-- /.card -->
+        
           </div>
         </div>
-        
-                
-            <!-- /.card -->
-            
-
-        
+      </div>
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
+        
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.1.0
@@ -266,7 +252,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
  }else{
     header("location: ./../login.php");
  }
-
 
 
  /**

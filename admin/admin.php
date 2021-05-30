@@ -34,7 +34,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Fixed Navbar Layout</title>
+  <title>Administration panel</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -64,6 +64,9 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Support</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+      <a href="../exit.php" class="btn btn-danger">Exit</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -100,18 +103,33 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="../account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                My account
+                  
+                </p>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                 <b>Administration</b>
                   
                 </p>
               </a>
             </li>
-            
+            <li class="nav-item">
+              <a href="tickets.php" class="nav-link">
+                <i class="nav-icon fas fa">?</i>
+                <p>
+                Support
+                  
+                </p>
+              </a>
+            </li>
           <li class="nav-item">
             <a href="../exit.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
@@ -147,17 +165,52 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card collapsed-card">
               <div class="card-header">
-                <h3 class="card-title">Pending aprovation</h3>
+                <h3 class="card-title">Support tickets</h3>
 
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                  
+                </div>
+              </div>
+              <!-- /.card-header -->
+              
+              <div class="card-body p-0">
+              
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Ticket ID</th>
+                      <th>Username(UID)</th>
+                      <th>Date</th>
+                      <th>State</th>
+                      <th>Ticket</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php echo userF::list_tickets(); ?>
+                   
+                  </tbody>
+                </table>
+              </div>
+              
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="card collapsed-card">
+              <div class="card-header">
+                <h3 class="card-title">Articles pending aprovation</h3>
+
+                <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                  
                 </div>
               </div>
               <!-- /.card-header -->
@@ -189,21 +242,15 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
+            <div class="card collapsed-card">
               <div class="card-header">
-                <h3 class="card-title">All entrys</h3>
+                <h3 class="card-title">All projects</h3>
 
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                  
                 </div>
               </div>
                 <!-- /.card-header -->
@@ -291,31 +338,17 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 </html>
 <?php
           }else{
-            echo    "<script type=\"text/javascript\">
-						window.location=\"".$uri."/account.php\"
-						</script>";
+            header("location: ./../account.php");
           }
        }else{
-     //Se redicciona si es que no se cumple
-  	//Modificar como en la siguiete linea de codigo
-  	//si es que esta en un subdirectorio
-  	// header("location: ".$uri."/wp-admin"); 
-    header("location: ".$uri);
+      header("location: ./../login.php");
        }
   }else{
-  	//Se redicciona si es que no se cumple
-  	//Modificar como en la siguiete linea de codigo
-  	//si es que esta en un subdirectorio
-  	// header("location: ".$uri."/wp-admin"); 
-    header("location: ".$uri);
+    header("location: ./../login.php");
   }
 
  }else{
- 	//redirecionado si no existe la variable global
- 	//Modificar como en la siguiete linea de codigo
-  	//si es que esta en un subdirectorio
-  	// header("location: ".$uri."/wp-admin");
-    header("location: ".$uri);
+    header("location: ./../login.php");
  }
 
 

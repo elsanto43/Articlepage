@@ -54,10 +54,10 @@
                             $query =  "UPDATE
                             tb_projects SET
                             editor_id = " . $IDusr. "
-                            WHERE tb_projects.id='".$_GET['id']. "';";
+                             WHERE tb_projects.id='".$_GET['id']. "';";
                             $mysql->query($query); //el id del editor se modifica en la tabla de proyectos
                             
-                            header("location: ./account.php");	//ya tiene un proyecto pendiente
+                            header("location: ./editor.php");	//ya tiene un proyecto pendiente
                         }
                     }
                 }

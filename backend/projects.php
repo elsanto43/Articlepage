@@ -10,6 +10,7 @@ require_once 'config.php';
 class Project{
 
 	//campos que alamcenan los valores 
+
 	private $nombre       ="";
 	private $descripcion ="";
 	private $clase;
@@ -31,6 +32,7 @@ class Project{
 		$this->cantidad=$cantidad_;
 	}
 
+	
 private function clasestr_toNum($mysql, $clasestr){
 	$query    = "SELECT id FROM tb_classes WHERE tb_classes.name='".$clasestr."';";
 	
@@ -65,30 +67,36 @@ public function newProject(){
 	$this->mensaje="";
 	$IDusr		=$_SESSION['INGRESO']["Id"];
 	
-		
+	$numarts = userF::get_numarticles($IDusr);
 	$confi=new Datos_conexion();
 	$mysql=new mysqli($confi->host(),$confi->usuario(),$confi->pasword(),$confi->DB());
+	
+	if ($numarts >= $this->cantidad) {
 	//Determinamos si la conexion a la bd es correcto.
-	if($mysql->connect_errno){
-		exit;
-	}else{
-		$strclase = $this->clasestr_toNum($mysql, $this->clase);
-		$tmpdate = date('d/m/Y');
-		$query    = "INSERT into tb_projects (`id`, `user_id`, `name`, `date`, `description`,
-						`num_articles`, `type`, `class`, `state`) 
-						VALUES (NULL, '".$IDusr."', '".$this->nombre."', '".$tmpdate."', '".$this->descripcion."',
-								'".$this->cantidad."', ".$this->tipo.", '". $strclase."', '1');";
-		
-		$mysql->query($query);
+		if($mysql->connect_errno){
+			exit;
+		}else{
+			$strclase = $this->clasestr_toNum($mysql, $this->clase);
+			$tmpdate = date('d/m/Y');
+			$query    = "INSERT into tb_projects (`id`, `user_id`, `name`, `date`, `description`,
+							`num_articles`, `type`, `class`, `state`) 
+							VALUES (NULL, '".$IDusr."', '".$this->nombre."', '".$tmpdate."', '".$this->descripcion."',
+									'".$this->cantidad."', ".$this->tipo.", '". $strclase."', '1');";
+			
+			$mysql->query($query);
 
-		$idnew= ($mysql->insert_id);
-		$mysql->close();
-		
-		
-		//si todo esta ok, lo redirecciona a viewproject.php
-		echo    "<script type=\"text/javascript\">
-							window.location=./../viewproject.php?id='".$idnew."'\"
-							</script>";
+			$idnew= ($mysql->insert_id);
+			$mysql->close();
+			
+			
+			
+			//si todo esta ok, lo redirecciona a viewproject.php
+			echo    "<script type=\"text/javascript\">
+								window.location=./../viewproject.php?id='".$idnew."'\"
+								</script>";
+		}
+	}else{
+		$this->mensaje='<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>You do not have enough articles. <a style=""href="buy-entrys.php" class="">Buy more</a><br><br></div>';
 	}
 		
 	
@@ -103,6 +111,7 @@ public function MostrarMsg(){
 }
 
 class viewproject{
+	
 	public function printViewProject($projectid, $IDusr){
 
         $confi=new Datos_conexion();

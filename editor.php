@@ -30,8 +30,10 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
           $roles = userF::get_role($IDusr);
-            if ($roles == "1") {
+            if ($roles == "1"){
               header("location: ./account.php");	
+            }elseif ($roles == "3"){
+              header("location: ./admin/admin.php");	
             }
 	       ?>
 <!DOCTYPE html>
@@ -74,16 +76,19 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <span class="input-group-text">
           <i class="fas fa-dollar-sign"></i>
         </span>
-        <button type="button" class="btn btn-flat btn-default"  >123.55</button>
+        <button type="button" class="btn btn-flat btn-default"  ><?php echo userF::get_user_money($IDusr);?></button>
         <a href="buy-entrys.php"  class=""><button type="button" style="height:40px; border-top-left-radius:0px;border-bottom-left-radius:0px;" class="btn btn-info">Add</button></a>
       </div>
       
       <!-- Navbar Search -->
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="account.php" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="support.php" class="nav-link">Support</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="exit.php" class="btn btn-danger">Exit</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -111,7 +116,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?php echo $Nombreusr; ?></a>
+          <a href="account.php" class="d-block"><?php echo $Nombreusr; ?></a>
         </div>
       </div>
 
@@ -133,29 +138,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <?php if ($roles==3){
-              ?>
-              <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon fas fa-chart-pie"></i>
-                      <p>
-                      <b>Administration</b>
-                        
-                      </p>
-                    </a>
-                  </li>
-                  
-                <li class="nav-item">
-                  <a href="../exit.php" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                      <span class="left badge badge-danger">Close</span>
-                    </p>
-                  </a>
-                </li> 
-
-      <?php }else{
-                  ?>
+            
             <li class="nav-item">
               <a href="account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -166,7 +149,14 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="projects.php" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                
+                <p>Projects</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-edit"></i>
                 
                 <p><b>Editor</b></p>
@@ -182,8 +172,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </p>
             </a>
           </li>
-          <?php }
-                  ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -198,7 +186,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Project editor</h1>
+            <h1>Article editor</h1>
           </div>
 
         </div>
@@ -209,6 +197,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <section class="content">
       <div class="row">
         <div class="col-12">
+          <?php $pendant = userF::has_pending_proyect($IDusr);
+          if ($pendant <> 0) {?>
           <div class="card collapsed-card">
             <div class="card-header">
               <h3 class="card-title">Current project</h3>
@@ -228,10 +218,11 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
             
               <!-- /.card-header -->
               <div class="card-body">
+                
                 <form id="project" action="">
                   <?php 
                           $kale = new viewproject();
-                          echo  $kale->printViewProject(userF::has_pending_proyect($IDusr),$IDusr) ; 
+                          echo  $kale->printViewProject($pendant,$IDusr) ; 
                           ?>
                   
                   <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
@@ -243,11 +234,9 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
             </div>
             <!-- /.card-body -->
           </div>
+          <?php }?>
           <!-- /.card -->
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
+        
           <div class="card card-outline card-info">
             <div class="card-header">
               <h3 class="card-title">
@@ -255,26 +244,105 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" >
+              <form action="editor.php" method="GET">
+                <?php 
+                  
+                  if (isset($_GET['edit'])){ 
+                    $tmparr = explode(" - ", $_GET['edit']);
+                    $selected = $tmparr[0];
+                  }else{//No se le dio un article a elegir, entonces
+                    $selected = 0;
+                  }?>
+                  <select onchange="this.form.submit()" name="edit"style="width:100%; float:left;" class="custom-select">
+                    <option>Create new article</option>
+                    <?php
+                     echo userF::list_Articles($IDusr, $selected); ?>
+                  </select> 
+                  
+                    <br>
+                <!--<button type="submit" id="saveData" style="width:15%; margin-left:1%;" class="btn btn-primary float-center">Open</button> -->
+                <br> 
+                
+              </form>
+              <br>
               <form action="backend/saveeditor.php" method="POST">
+                <div class="form-group row">
+                  <label for="inputName" class="col-sm-1 col-form-label">Name</label>
+                  <div class="col-sm-8">
+                    <?php 
+                    $artname = "";
+                      if($selected > 0) {
+                        
+                        if (array_key_exists(1,$tmparr)) {
+                          $artname = $tmparr[1];
+                        }else{
+                          $artname = userF::get_art_name($selected);
+                        }
+                        
+                        
+                      }
+                    ?>
+                    <input class="form-control" name="articlename" value="<?php echo $artname; ?>" id="inputName" placeholder="Name">
+                  </div>
+                </div>
+                <input type="hidden" name="selected" value="<?php if($selected > 0) {echo $tmparr[0];} ?>">
                 <textarea id="summernote" name="mydata">
-                  <?php echo userF::get_text_saved($IDusr);?>
+                  <?php if (($selected) <> 0) { //Si se le pasa un index de articulo para abrir, de su cuenta se muestra aqui
+                      echo userF::get_text_saved($IDusr, $selected);
+                    }?>
                 </textarea>
 
                 <button name="boton" value="a" type="submit" id="saveData" style="width:48%; float:left;" class="btn btn-primary float-center">Save</button> 
                 
                 <a href="account.php" style="width:48%; float: right;" class="btn btn-secondary float-center">Cancel</a>
                 
-                <button name="boton" value="b" type="submit" id="saveData" style="margin-top:14px; width:100%; float:left;" class="btn btn-success float-center">Publish article</button> 
+                <?php if ($pendant <> 0) { echo '<button name="boton" value="b" type="submit" id="saveData" style="margin-top:14px; width:100%; float:left;" class="btn btn-success float-center">Publish article</button> ';} ?>
+                
+                
               </form>
             </div>
             <div class="card-footer">
-              
+            <?php if ($pendant <> 0) { 
+              echo '<p><B>Remember: </B> Once your article is published, you cannot modify it anymore</p>';
+                  if (userF::get_article_state($selected) == 3) {
+                      ?>
+              <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                ×</button>
+                <h6><i class="icon fas fa-ban"></i> This articled has been denyed!</h6>
+                Reason: Because it had ortografy errors. <br>
+                Please correct it and re-publish it
+              </div>
+
+                      <?php
+                      //userF::update_article_state($selected,0);
+                  }
+              } ?>
+            
             </div>
+            
           </div>
+          
         </div>
         <!-- /.col-->
       </div>
+
+      <?php if ($pendant <> 0) {?> 
+       <!-- Si tiene un proyecto pendiente, mostramos los articulos que ya fueron publicados. -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Published articles</h1>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+        <br>
+        <?php echo userF::showProjectArticlesEditor($pendant);?>
+      </section>
+
+      <?php }?>
       <!-- ./row -->
       
       <!-- ./row -->

@@ -1,12 +1,8 @@
-
-
-
-                <?php
+<?php
 session_start();
 require_once 'backend/PasswordHash.Class.php';
 require_once 'backend/utils.php';
 require_once 'backend/projects.php';
-
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -30,14 +26,15 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
           $roles = userF::get_role($IDusr);
-          
+          if ($roles <> 3) {
+            
 	       ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project details</title>
+  <title>Projects</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -61,6 +58,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+                  
       <div class="btn-group">
         <span class="input-group-text">
           <i class="fas fa-dollar-sign"></i>
@@ -68,8 +67,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <button type="button" class="btn btn-flat btn-default"  ><?php echo userF::get_user_money($IDusr);?></button>
         <a href="buy-entrys.php"  class=""><button type="button" style="height:40px; border-top-left-radius:0px;border-bottom-left-radius:0px;" class="btn btn-info">Add</button></a>
       </div>
-      
-      <!-- Navbar Search -->
       <li class="nav-item d-none d-sm-inline-block">
         <a href="account.php" class="nav-link">Home</a>
       </li>
@@ -77,14 +74,14 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <a href="support.php" class="nav-link">Support</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-      <a href="exit.php" class="btn btn-danger">Exit</a>
+        <a href="exit.php" class="btn btn-danger">Exit</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
-      </li> 
-      
+      </li>
+
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -126,38 +123,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          
-            <?php if ($roles==3){
-              ?>
-              <li class="nav-item">
-                <a href="account.php" class="nav-link">
-                  <i class="nav-icon fas fa-chart-pie"></i>
-                  <p>
-                  My account
-                    
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="admin/admin.php" class="nav-link active">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                  <b>Administration</b>
-                    
-                  </p>
-                </a>
-              </li>
-                <li class="nav-item">
-                  <a href="../exit.php" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                      <span class="left badge badge-danger">Close</span>
-                    </p>
-                  </a>
-                </li> 
-
-      <?php }elseif($roles==2){
-                  ?>
+          <li class="nav-item">
+            
             <li class="nav-item">
               <a href="account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -168,45 +135,32 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </a>
             </li>
             <li class="nav-item">
-              <a href="projects.php" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                
-                <p>Projects</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="editor.php" class="nav-link">
-                <i class="nav-icon fas fa-edit"></i>
-                
-                <p>Editor</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="exit.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon fas fa-book"></i>
+                  
+                  <p><b>Projects</b></p>
+                </a>
+              </li>
+            <?php 
+            if ($roles == 2) {
+                echo '<li class="nav-item">
+                <a href="editor.php" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
+                  
+                  <p>Editor</p>
+                </a>
+              </li><li class="nav-item">
+              <a href="support.php" class="nav-link">
+                <i class="nav-icon fas fa">?</i>
                 <p>
-                  <span class="left badge badge-danger">Close</span>
-                </p>
-              </a>
-            </li>
-            <?php }else{?>
-              <li class="nav-item">
-              <a href="account.php" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
-                <p>
-                My account
+                Support
                   
                 </p>
               </a>
-            </li>
-            <li class="nav-item">
-              <a href="projects.php" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                
-                <p>Projects</p>
-              </a>
-            </li>
-            <li class="nav-item">
+            </li>';
+            }elseif ($roles == 1) {
+                echo '
+              <li class="nav-item">
               <a href="buy-entrys.php" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>
                 <p>
@@ -214,21 +168,30 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   
                 </p>
               </a>
-            </li>
-            <li class="nav-item">
-              <a href="exit.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  <span class="left badge badge-danger">Close</span>
-                </p>
-              </a>
-            </li>
-            <?php  }
-              ?>
+            </li><li class="nav-item">
+            <a href="support.php" class="nav-link">
+              <i class="nav-icon fas fa">?</i>
+              <p>
+              Support
+                
+              </p>
+            </a>
+          </li>';
+            }
+            
+            ?>
+            
+            
+          </li>
+          <li class="nav-item">
+            <a href="exit.php" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                <span class="left badge badge-danger">Close</span>
+              </p>
+            </a>
+          </li>
           
-         
-         
-                  
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -243,7 +206,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>View project</h1>
+            <h1>Projects</h1>
           </div>
           <!-- /.container-fluid <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -259,69 +222,132 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Project</h3>
+   <?php if ($roles == 2) {
+            $haspending = userF::has_pending_proyect($IDusr);
+              if ($haspending == true){    
+              echo '<blockquote>
+                  <p>Finish your pending proyect to take a new one</p>
+                  <a href="editor.php" class="btn btn-primary">Go to editor</a>
+                </blockquote>'; 
+              }
+          }elseif ($roles == 1){
+            echo '<blockquote>
+                  <p>You have ' . userF::get_numarticles($IDusr) .' disponible articles for your projects</p>
+                  <a href="buy-entrys.php" class="btn btn-success">Buy more</a>
+                </blockquote>'; 
+          }
+                    ?>
+      
+      <div class="card">
+            <div class="card-header">
 
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <!--<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+              <?php if ($roles == 2){
+                    echo '<h3 class="card-title">Disponible projects</h3>';
+              }elseif ($roles == 1){
+                  echo '<h3 class="card-title">Your projects</h3>';
+              } ?>
+              
 
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
-                    </div>-->
-                  </div>
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <!--<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>-->
+                <?php if ($roles == 1){ ?>
+                <a style="width: 150px;" href="newproject.php">
+                  <button href="newproject.php" type="button" class="btn btn-primary btn-block btn-sm">
+                    <i href="newproject.php"  class="fa fa-plus"></i>  New project
+                  </button>
+                </a>
+                <?php } ?>
                 </div>
               </div>
-              <!-- /.card-header -->
-              
-              <div class="card card-default">
-              
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <form id="project" action="">
-                    <?php 
-                            $kale = new viewproject();
-                            echo  $kale->printViewProject($_GET['id'],$IDusr) ; 
-                            ?>
-                    
-                    <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
-                    /.row -->
-                    <div class="row">
-                      <div class="col-12">
-                        
-                        <?php if ($roles == 1) {
-                          echo '<a href="projects.php" class="btn btn-secondary">Go back</a>';
-                        }elseif ($roles == 2) {
-                          echo '<a href="projects.php" class="btn btn-secondary">Go back</a>';
-                          $haspending = userF::has_pending_proyect($IDusr);
-                          if ($haspending == false){
-                            echo '<a disabled="" href="takeproject.php?id='.$_GET['id'].'" class="btn btn-primary float-right">Take this project</a>';
-                          }else{
-                            echo '<a disabled="" href="#" class="btn btn-secondary float-right">Take this project</a>';
-                          }
-                        }else{ //es admin
-                          echo '<a href="admin/admin.php" class="btn btn-secondary">Go back</a>';
-                        }
-                          ?>
-                        
-
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              
-              </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
             
 
-            <?php echo userF::showProjectArticles($_GET['id'], $IDusr) ; ?>
+            <div class="card-body table-responsive p-0">
+            
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Class</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php echo userF::list_Projects($roles); ?>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        <div class="row">
+          
+          <div class="col-12">
+          <?php 
+            if ($roles == 2) {
+                
+                if ($haspending == true) {
+                  
+                ?>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Current project (ID: <?php $pend = userF::has_pending_proyect($IDusr); echo "$pend)"?> </h3>
+
+                        <div class="card-tools">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                          </button>
+                          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- /.card-header -->
+                      
+                      <div class="card-body p-0">
+                      
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                          <form id="project" action="">
+                            <?php 
+                                    $kale = new viewproject();
+                                    echo  $kale->printViewProject($pend,$IDusr) ; 
+                                    ?>
+                            
+                            <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
+                            /.row -->
+                            
+                          </form>
+                        </div>
+                      
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <?php
+                      }
+                      
+                  } ?>
+                  
+                  
+          
+            
+           
+            <!-- /.card -->
           </div>
         </div>
       </div>
@@ -347,10 +373,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-
-<!-- jquery-validation -->
-<script src="plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="plugins/jquery-validation/additional-methods.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
@@ -359,14 +381,19 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 <script src="dist/js/demo.js"></script>
 </body>
 </html>
-
 <?php
+        }else{
+          echo     "<script>
+						 
+					window.location.replace('./admin/admin.php'); 
+					</script>";
+        }
        }else{
      //Se redicciona si es que no se cumple
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-    header("location: ./login.php");
+        header("location: ./login.php");
           }
       }else{
         //Se redicciona si es que no se cumple

@@ -3,9 +3,10 @@
 
                 <?php
 session_start();
-require_once 'backend/PasswordHash.Class.php';
-require_once 'backend/utils.php';
-require_once 'backend/projects.php';
+require_once '../backend/PasswordHash.Class.php';
+require_once '../backend/utils.php';
+require_once '../backend/projects.php';
+
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -28,20 +29,33 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      //se uni los datos para verificar
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
+          $roles = userF::get_role($IDusr);
+            if ($roles == "1"){
+              header("location: ./account.php");	
+            }elseif ($roles == "2"){
+              header("location: ./account.php");	
+            }
 	       ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Create new project</title>
+  <title>Answer ticket </title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+ <!-- Google Font: Source Sans Pro -->
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="../plugins/codemirror/codemirror.css">
+  <link rel="stylesheet" href="../plugins/codemirror/theme/monokai.css">
+  <!-- SimpleMDE -->
+  <link rel="stylesheet" href="../plugins/simplemde/simplemde.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed">
 <!-- Site wrapper -->
@@ -65,6 +79,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <button type="button" class="btn btn-flat btn-default"  ><?php echo userF::get_user_money($IDusr);?></button>
         <a href="buy-entrys.php"  class=""><button type="button" style="height:40px; border-top-left-radius:0px;border-bottom-left-radius:0px;" class="btn btn-info">Add</button></a>
       </div>
+      
       <!-- Navbar Search -->
       <li class="nav-item d-none d-sm-inline-block">
         <a href="account.php" class="nav-link">Home</a>
@@ -73,14 +88,14 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <a href="support.php" class="nav-link">Support</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-      <a href="exit.php" class="btn btn-danger">Exit</a>
+        <a href="exit.php" class="btn btn-danger">Exit</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li> 
-
+      
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -89,8 +104,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link elevation-4">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <img src="../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">AdminLTE 3 </span>
     </a>
 
     <!-- Sidebar -->
@@ -98,10 +113,10 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="account.php" class="d-block"><?php echo $Nombreusr; ?></a>
+          <a href="../account.php" class="d-block"><?php echo $Nombreusr; ?></a>
         </div>
       </div>
 
@@ -122,10 +137,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            
             <li class="nav-item">
-              <a href="account.php" class="nav-link">
+              <a href="../account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
                 My account
@@ -133,40 +146,32 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-                <a href="projects.php" class="nav-link active">
-                  <i class="nav-icon fas fa-book"></i>
-                  
-                  <p><b>Projects</b></p>
-                </a>
-              </li>
-            <li class="nav-item">
-              <a href="buy-entrys.php" class="nav-link">
-                <i class="nav-icon far fa-plus-square"></i>
+            <li class="nav-item active">
+              <a href="admin.php" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Buy entrys
+                Administration
                   
                 </p>
               </a>
             </li>
-          </li>
-          <li class="nav-item">
-              <a href="support.php" class="nav-link">
+            <li class="nav-item">
+              <a href="tickets.php" class="nav-link active">
                 <i class="nav-icon fas fa">?</i>
                 <p>
-                Support
+                <b>Support</b>
                   
                 </p>
               </a>
             </li>
           <li class="nav-item">
-            <a href="exit.php" class="nav-link">
+            <a href="../exit.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 <span class="left badge badge-danger">Close</span>
               </p>
             </a>
-          </li>
+          </li> 
           
         </ul>
       </nav>
@@ -182,127 +187,87 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Create project</h1>
+            <h1>Ticket answer</h1>
           </div>
-          <!-- /.container-fluid <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">My proyects</li>
-            </ol>
-          </div>-->
+
         </div>
       </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
       <div class="row">
-          <div class="col-12">
-            <div class="card" >
-              <div class="card-header">
-                <h3 class="card-title">New project</h3>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">User support message</h3>
 
-                
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <!--<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
-                    </div>-->
-                  </div>
-                </div>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                  <i class="fas fa-times"></i>
+                </button>
               </div>
-<!-- /.card-header -->
-              
-        <div class="card card-default">
-         
-          <!-- /.card-header -->
-          <div class="card-body">
-            <form id="newproject" action="newproject.php" method="POST">
-              <div class="row">
-                <div class="col-sm-6">
-                
-                  <div class="form-group">
-                    <label for="Name">Project Name</label>
-                    <input name="name" type="text" id="name" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="Description">Project Description</label>
-                    <textarea name="description" id="description" class="form-control" rows="5"></textarea>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="inputStatus">Type</label>
-                    <select name="type" id="type" class="form-control select2bs4" style="width: 100%;">
-                        <option selected="selected">Small article</option>
-                        <option>Medium article</option>
-                        <option>Large article</option>
-                        <option>Very large article</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputStatus">Class</label>
-                      <select name="class" id="class" class="form-control select2bs4" style="width: 100%;">
-                      <?php 
-                      
-                      echo  userF::list_Classes("1") ; 
-                      ?>
-                      
-                      </select>
-                  </div>
-                    <div class="form-group">
-                      <label for="inputStatus">Number of articles</label>
-                      <select name="numberart" id="numberart" class="form-control select2bs4" style="width: 100%;">
-                          <option selected>1</option>
-                          <option >2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                          <option>6</option>
-                          <option>7</option>
-                        </select>
-                    </div>
-                
-                </div>
-                
-              </div>
-              
-              <?php 
-              if(!empty($_POST['name']) && !empty($_POST['description']) ) {
-                    $iniciar=new Project($_POST['name'],$_POST['description'],$_POST['class'],
-                                         $_POST['type'],$_POST['numberart']);
-                    $iniciar->newProject();
-                      //Muestra el mesaje de error al usuario
-                    echo $iniciar->MostrarMsg();
-
-              } 
-
-              
-              ?>
-              <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
-               /.row -->
-              <div class="row">
-                <div class="col-12">
-                  <a href="account.php" class="btn btn-secondary">Cancel</a>
-                  <input type="submit" value="Create new Porject" class="btn btn-success float-right">
-                </div>
-              </div>
-            </form>
-          </div>
-        
-        </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
+            <!-- /.card-header -->
+            
+            <div class="card-body p-0">
+            
+              <!-- /.card-header -->
+              <div class="card-body">
+                  <p><?php echo userF::get_ticket_print($_GET['id']);?></p>
+                
+              </div>
+            
+            </div>
+            <!-- /.card-body -->
           </div>
+          <!-- /.card -->
+        
+          <div class="card card-outline card-info">
+            <div class="card-header">
+              <h3 class="card-title">
+                Editor
+              </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" >
+             
+              <form action="../backend/proccessanswer.php" method="POST">
+                <div class="form-group row">
+                  <label for="inputName" class="col-sm-1 col-form-label">Name</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" name="adminname" value="<?php echo $Nombreusr; ?>" id="inputName" placeholder="Name">
+                  </div>
+                </div>
+
+                <textarea id="summernote" name="mydata" style="height:400px;">
+                </textarea>
+
+                <button name="boton" value="<?php echo $_GET['id'];?>"type="submit" style="width:48%; float:left;" class="btn btn-success float-center">Send answer</button> 
+                
+                <a href="tickets.php" style="width:48%; float: right;" class="btn btn-secondary float-center">Cancel</a>
+                
+                
+              </form>
+            </div>
+            <div class="card-footer">
+            
+            
+            </div>
+            
+          </div>
+          
         </div>
+        <!-- /.col-->
       </div>
+
+      
+      <!-- ./row -->
+      
+      <!-- ./row -->
     </section>
     <!-- /.content -->
   </div>
@@ -324,17 +289,37 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
+<script src="../plugins/jquery/jquery.min.js"></script>
 
-<!-- jquery-validation -->
-<script src="plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="plugins/jquery-validation/additional-methods.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="../dist/js/adminlte.min.js"></script>
+<!-- Summernote -->
+<script src="../plugins/summernote/summernote-bs4.min.js"></script>
+
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<script src="../dist/js/demo.js"></script>
+<!-- Page specific script -->
+<script>
+
+
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+
+  })
+
+  
+//$(document).on("click","#saveData", function(){
+//      var myData = $('#summernote').summernote('code');
+//      document.body.innerHTML += '<form id="dynForm" action="backend/saveeditor.php" method="post"><input type="hidden" name="mydata" value="'+myData+'"></form>';
+//      document.getElementById("dynForm").submit();
+ 
+//});
+//Este codigo quedo obsoleto, ahora se hace todo desde HTML.
+
+</script>
 </body>
 </html>
 
@@ -344,7 +329,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
   	//Modificar como en la siguiete linea de codigo
   	//si es que esta en un subdirectorio
   	// header("location: ".$uri."/wp-admin"); 
-    header("location: ./login.php");
+        header("location: ./login.php");
           }
       }else{
         //Se redicciona si es que no se cumple

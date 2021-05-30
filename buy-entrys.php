@@ -60,17 +60,19 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <span class="input-group-text">
           <i class="fas fa-dollar-sign"></i>
         </span>
-        <button type="button" class="btn btn-flat btn-default"  >123.55</button>
+        <button type="button" class="btn btn-flat btn-default"  ><?php echo userF::get_user_money($IDusr);?></button>
         <button type="button" class="btn btn-info">Add</button>
       </div>
       <!-- Navbar Search -->
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index.php" class="nav-link">Home</a>
+        <a href="account.php" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="support.php" class="nav-link">Support</a>
       </li>
-
+      <li class="nav-item d-none d-sm-inline-block">
+      <a href="exit.php" class="btn btn-danger">Exit</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -97,7 +99,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?php echo $Nombreusr; ?></a>
+          <a href="account.php" class="d-block"><?php echo $Nombreusr; ?></a>
         </div>
       </div>
 
@@ -129,16 +131,16 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </p>
               </a>
             </li>
-
+            
             <li class="nav-item">
-                <a href="newproject.php" class="nav-link">
-                  <i class="nav-icon fas fa-edit"></i>
+                <a href="projects.php" class="nav-link">
+                  <i class="nav-icon fas fa-book"></i>
                   
-                  <p>New project</p>
+                  <p>Projects</p>
                 </a>
               </li>
               <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link active">
                 <i class="nav-icon far fa-plus-square"></i>
                 <p>
                 <b>Buy entrys</b>
@@ -146,7 +148,15 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </p>
               </a>
             </li>
-            
+            <li class="nav-item">
+              <a href="support.php" class="nav-link">
+                <i class="nav-icon fas fa">?</i>
+                <p>
+                Support
+                  
+                </p>
+              </a>
+            </li>
             
           </li>
           <li class="nav-item">
@@ -196,73 +206,49 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="position-relative p-3 bg-gray" style="height: 180px">
-                      <div class="ribbon-wrapper">
-                        <div class="ribbon bg-primary">
-                          Ribbon
-                        </div>
-                      </div>
-                      Ribbon Default <br />
-                      <small>.ribbon-wrapper.ribbon-lg .ribbon</small>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="position-relative p-3 bg-gray" style="height: 180px">
-                      <div class="ribbon-wrapper ribbon-lg">
-                        <div class="ribbon bg-info">
-                          Ribbon Large
-                        </div>
-                      </div>
-                      Ribbon Large <br />
-                      <small>.ribbon-wrapper.ribbon-lg .ribbon</small>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="position-relative p-3 bg-gray" style="height: 180px">
-                      <div class="ribbon-wrapper ribbon-xl">
-                        <div class="ribbon bg-secondary">
-                          Ribbon Extra Large
-                        </div>
-                      </div>
-                      Ribbon Extra Large <br />
-                      <small>.ribbon-wrapper.ribbon-xl .ribbon</small>
-                    </div>
-                  </div>
-                </div>
+                
                 <div class="row mt-4">
                   <div class="col-sm-4">
                     <div class="position-relative p-3 bg-gray" style="height: 180px">
                       <div class="ribbon-wrapper ribbon-lg">
+                        <div class="ribbon bg-primary text-lg">
+                          20% OFF
+                        </div>
+                      </div>
+                      <h4>Three Articles</h4>
+                      <medium>Three articles for just $60 USD</medium>
+                      <br> <br>
+
+                      <a href="proccessbuy.php?i=1" class="btn btn-block bg-gradient-primary btn-lg" style="margin-top:5px">Buy</a>
+                    </div>
+                    
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="position-relative p-3 bg-gray" style="height: 180px">
+                      <div class="ribbon-wrapper ribbon-lg">
+                        <div class="ribbon bg-info text-lg">
+                          4O% OFF
+                        </div>
+                      </div>
+                      <h3>Five Articles</h3>
+                      <medium>Five articles for just $90 USD</medium>
+                      <br><br>
+                      
+                      <a href="proccessbuy.php?i=2" class="btn btn-block bg-gradient-info btn-lg">Buy</a>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="position-relative p-3 bg-gray" style="height: 180px">
+                      <div class="ribbon-wrapper ribbon-lg">
                         <div class="ribbon bg-success text-lg">
-                          Ribbon
+                          50% OFF
                         </div>
                       </div>
-                      Ribbon Large <br /> with Large Text <br />
-                      <small>.ribbon-wrapper.ribbon-lg .ribbon.text-lg</small>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="position-relative p-3 bg-gray" style="height: 180px">
-                      <div class="ribbon-wrapper ribbon-xl">
-                        <div class="ribbon bg-warning text-lg">
-                          Ribbon
-                        </div>
-                      </div>
-                      Ribbon Extra Large <br /> with Large Text <br />
-                      <small>.ribbon-wrapper.ribbon-xl .ribbon.text-lg</small>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="position-relative p-3 bg-gray" style="height: 180px">
-                      <div class="ribbon-wrapper ribbon-xl">
-                        <div class="ribbon bg-danger text-xl">
-                          Ribbon
-                        </div>
-                      </div>
-                      Ribbon Extra Large <br /> with Extra Large Text <br />
-                      <small>.ribbon-wrapper.ribbon-xl .ribbon.text-xl</small>
+                      <h2>Seven Articles</h2>
+                      <medium>Seven articles for just $110 USD</medium>
+                      <br>    <br>
+                      
+                      <a href="proccessbuy.php?i=3" style="margin-top:-6px;" class="btn btn-block bg-gradient-success btn-lg">Buy</a>
                     </div>
                   </div>
                 </div>

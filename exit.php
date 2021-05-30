@@ -8,10 +8,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 				$uri = 'http://';
 			}
 		   $uri .= $_SERVER['HTTP_HOST'];
-    //Se redicciona una vez borrado la variable global
-  	//Modificar como en la siguiente linea de codigo
-  	//si es que esta en un subdirectorio
-  	// header("location: ".$uri."/wp-admin"); 
-	  session_destroy();
+
+	  session_unset();
+        session_destroy();
     header("location: ./login.php");		   
  ?>

@@ -6,7 +6,6 @@ session_start();
 require_once 'backend/PasswordHash.Class.php';
 require_once 'backend/utils.php';
 require_once 'backend/projects.php';
-
 //Para redireccionar si es que no se cumple
 //el logeo
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -29,15 +28,13 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      //se uni los datos para verificar
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
-          $roles = userF::get_role($IDusr);
-          
 	       ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project details</title>
+  <title>Create new project</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -68,7 +65,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <button type="button" class="btn btn-flat btn-default"  ><?php echo userF::get_user_money($IDusr);?></button>
         <a href="buy-entrys.php"  class=""><button type="button" style="height:40px; border-top-left-radius:0px;border-bottom-left-radius:0px;" class="btn btn-info">Add</button></a>
       </div>
-      
       <!-- Navbar Search -->
       <li class="nav-item d-none d-sm-inline-block">
         <a href="account.php" class="nav-link">Home</a>
@@ -84,7 +80,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li> 
-      
+
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -105,7 +101,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-        <a href="account.php" class="d-block"><?php echo $Nombreusr; ?></a>
+          <a href="account.php" class="d-block"><?php echo $Nombreusr; ?></a>
         </div>
       </div>
 
@@ -126,38 +122,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          
-            <?php if ($roles==3){
-              ?>
-              <li class="nav-item">
-                <a href="account.php" class="nav-link">
-                  <i class="nav-icon fas fa-chart-pie"></i>
-                  <p>
-                  My account
-                    
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="admin/admin.php" class="nav-link active">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                  <b>Administration</b>
-                    
-                  </p>
-                </a>
-              </li>
-                <li class="nav-item">
-                  <a href="../exit.php" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                      <span class="left badge badge-danger">Close</span>
-                    </p>
-                  </a>
-                </li> 
-
-      <?php }elseif($roles==2){
-                  ?>
+          <li class="nav-item">
+            
             <li class="nav-item">
               <a href="account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -168,44 +134,12 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </a>
             </li>
             <li class="nav-item">
-              <a href="projects.php" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                
-                <p>Projects</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="editor.php" class="nav-link">
-                <i class="nav-icon fas fa-edit"></i>
-                
-                <p>Editor</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="exit.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  <span class="left badge badge-danger">Close</span>
-                </p>
-              </a>
-            </li>
-            <?php }else{?>
-              <li class="nav-item">
-              <a href="account.php" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
-                <p>
-                My account
+                <a href="projects.php" class="nav-link">
+                  <i class="nav-icon fas fa-book"></i>
                   
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="projects.php" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                
-                <p>Projects</p>
-              </a>
-            </li>
+                  <p>Projects</p>
+                </a>
+              </li>
             <li class="nav-item">
               <a href="buy-entrys.php" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>
@@ -215,20 +149,25 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="exit.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  <span class="left badge badge-danger">Close</span>
+          </li>
+          <li class="nav-item">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa">?</i>
+                <p><b>
+                Support</b>
+                  
                 </p>
               </a>
             </li>
-            <?php  }
-              ?>
+          <li class="nav-item">
+            <a href="exit.php" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                <span class="left badge badge-danger">Close</span>
+              </p>
+            </a>
+          </li>
           
-         
-         
-                  
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -241,30 +180,22 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>View project</h1>
-          </div>
-          <!-- /.container-fluid <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">My proyects</li>
-            </ol>
-          </div>-->
-        </div>
+        
+            <h1  style="text-align:center;">New ticket</h1>
+          
       </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
+      <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card" style="width:80%; margin-left:10%;">
               <div class="card-header">
-                <h3 class="card-title">Project</h3>
+                <h3 class="card-title">Create support ticket</h3>
 
+                
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <!--<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -277,51 +208,34 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   </div>
                 </div>
               </div>
-              <!-- /.card-header -->
+<!-- /.card-header -->
               
-              <div class="card card-default">
-              
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <form id="project" action="">
-                    <?php 
-                            $kale = new viewproject();
-                            echo  $kale->printViewProject($_GET['id'],$IDusr) ; 
-                            ?>
-                    
-                    <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
-                    /.row -->
-                    <div class="row">
-                      <div class="col-12">
-                        
-                        <?php if ($roles == 1) {
-                          echo '<a href="projects.php" class="btn btn-secondary">Go back</a>';
-                        }elseif ($roles == 2) {
-                          echo '<a href="projects.php" class="btn btn-secondary">Go back</a>';
-                          $haspending = userF::has_pending_proyect($IDusr);
-                          if ($haspending == false){
-                            echo '<a disabled="" href="takeproject.php?id='.$_GET['id'].'" class="btn btn-primary float-right">Take this project</a>';
-                          }else{
-                            echo '<a disabled="" href="#" class="btn btn-secondary float-right">Take this project</a>';
-                          }
-                        }else{ //es admin
-                          echo '<a href="admin/admin.php" class="btn btn-secondary">Go back</a>';
-                        }
-                          ?>
-                        
-
-                      </div>
-                    </div>
-                  </form>
+        <div class="card card-default ">
+         
+          <!-- /.card-header -->
+          <div class="card-body" >
+            <form id="newproject" action="backend/tickets.php" method="POST">
+         
+                  <div class="form-group">
+                    <label for="Description">Support mesage</label>
+                    <textarea name="ticket" id="ticket" class="form-control" rows="15" maxlength="300"></textarea>
+                  </div>
+               
+              <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
+               /.row -->
+              <div class="row">
+                <div class="col-12">
+                  <a href="account.php" class="btn btn-secondary">Cancel</a>
+                  <input type="submit" value="Send ticket" class="btn btn-success float-right">
                 </div>
-              
               </div>
+            </form>
+          </div>
+        
+        </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-            
-
-            <?php echo userF::showProjectArticles($_GET['id'], $IDusr) ; ?>
           </div>
         </div>
       </div>
