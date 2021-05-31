@@ -279,6 +279,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                     <th>Name</th>
                     <th>Date</th>
                     <th>Class</th>
+                    <th>N* Articles</th>
                     <th>Status</th>
                     <th>Description</th>
                   </tr>

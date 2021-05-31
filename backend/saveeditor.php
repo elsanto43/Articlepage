@@ -38,8 +38,9 @@
                         if ($_POST['boton'] == "a") { //El boton solo guarda el borrador, no publica el articulo
                         //consulta SQL para vereficar si existe tal correo del
                         //usario que introdujo 
-                            if ($_POST['selected'] > 0) {
-                                $selected = $_POST['selected'];
+                            $selected = $_POST['selected'];
+                            if ($selected > 0) {
+                                
                                 $query    = "UPDATE
                                         tb_articles SET article = '".$_POST['mydata']."'
                                         , name = '".$_POST['articlename']."'
@@ -66,25 +67,40 @@
                             
                             $selected = $_POST['selected'];
                             $currproject = userF::has_pending_proyect($IDusr);
-                            
-                            $query    = "UPDATE
-                                   tb_articles SET tb_articles.state=1, article = '".$_POST['mydata']."'
-                                   , name = '".$_POST['articlename']."', project_id='$currproject'
-                                   WHERE tb_articles.id='".$selected. "';";
-                            $mysql->query($query);
+                            $published = userF::get_published_articles($currproject);
+
+                            if ($selected > 0) {
+                                
+                                $query    = "UPDATE
+                                        tb_articles SET state=1, article = '".$_POST['mydata']."'
+                                        , name = '".$_POST['articlename']."', project_id='$currproject'
+                                        WHERE tb_articles.id='".$selected. "';";
+
+                                        $mysql->query($query);
+                                        if (strlen($published) > 0) {
+                                            $published = $published . "-$selected";
+                                        }else{
+                                            $published = $selected;
+                                        }
+                            }else{ //Se crea un nuevo articulo
+                                $query = "INSERT INTO tb_articles (`id`, `name`, `state`, `project_id`, `user_id`, `article`) 
+                                            VALUES (NULL, '".$_POST['articlename']."', '1', '$currproject', '$IDusr', '".$_POST['mydata']."');";
+                                $mysql->query($query);
+                                $newid = $mysql->insert_id;
+
+                                if ((strlen($published) > 0) & ($published <> '0')) {
+                                    $published = $published . "-$newid";
+                                }else{
+                                    $published = $newid;
+                                }
+                            }
+
                             //tambien actualizamos la tabla de proyectos, agregandolo a los articulos publicados.
                             
-                            
-                            
-                            $published = userF::get_published_articles($currproject);
-                            if (strlen($published) > 0) {
-                                $published = $published . "-$selected";
-                            }else{
-                                $published = $selected;
-                            }
                             $query = "UPDATE tb_projects SET tb_projects.ispublished='1', tb_projects.published='$published' WHERE tb_projects.id='$currproject'";
                             $mysql->query($query);
-                            header("location: ./../editor.php");
+                            echo "Llego4" . $query;
+                            //header("location: ./../editor.php");
                         }
                     }
                     

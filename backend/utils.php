@@ -949,8 +949,8 @@ class userF {
                 $tmpstr = "";
                 while ($arr = $respos->fetch_assoc()){
                     $tmpstr =  $arr['class'];
-                    if (strlen($arr['description']) > 33) {
-                        $formatstr = substr($arr['description'],0,33) . "...";
+                    if (strlen($arr['description']) > 22) {
+                        $formatstr = substr($arr['description'],0,22) . "...";
                     }else{
                         $formatstr = $arr['description'];
                     }
@@ -959,6 +959,7 @@ class userF {
                                     "</td> <td>" . $arr['name'] .  //name
                                     "</td> <td>" . $arr['date'] . //date
                                     "</td> <td>" . userF::get_class_name($tmpstr, $mysql) . //class
+                                    "</td> <td>" . $arr['num_articles'] . //date
                                     "</td> <td>" . userF::get_status_app($arr['state']) . //status
                                     "</td> <td>" . $formatstr . '</td> <td> 
                                     <a style="width: 150px;" href="../viewproject.php?id='.$arr['id'].'"><button type="button" class="btn btn-secondary btn-block btn-sm">More info</button></a>' . "</td></tr>" ;//cerramos el item
@@ -967,6 +968,7 @@ class userF {
                                     "</td> <td>" . $arr['name'] .  //name
                                     "</td> <td>" . $arr['date'] . //date
                                     "</td> <td>" . userF::get_class_name($tmpstr, $mysql) . //class
+                                    "</td> <td>" . $arr['num_articles'] . //date
                                     "</td> <td>" . userF::get_status_app($arr['state']) . //status
                                     "</td> <td>" . $formatstr . '</td> <td> 
                                     <a style="width: 150px;" href="viewproject.php?id='.$arr['id'].'"><button type="button" class="btn btn-secondary btn-block btn-sm">More info</button></a>' . "</td></tr>" ;//cerramos el item

@@ -28,6 +28,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	      //se uni los datos para verificar
 	      $Ccontrase=$IDusr.$Ipusr.$Nombreusr.$HorSesion;
 	      if($Contrasena->CheckPassword($Ccontrase, $Claveusr)){
+          $roles = userF::get_role($IDusr);
 	       ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,8 +123,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            
+           
             <li class="nav-item">
               <a href="account.php" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -140,6 +140,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   <p>Projects</p>
                 </a>
               </li>
+            <?php if ($roles == 1) {?>
             <li class="nav-item">
               <a href="buy-entrys.php" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>
@@ -149,7 +150,17 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </p>
               </a>
             </li>
-          </li>
+              <?php }else{?>
+
+                <li class="nav-item">
+              <a href="editor.php" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                
+                <p>Editor</p>
+              </a>
+            </li>
+
+            <?php }?>
           <li class="nav-item">
               <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa">?</i>

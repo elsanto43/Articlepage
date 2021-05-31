@@ -218,9 +218,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 </div>
               </div>
 <!-- /.card-header -->
-              
-        <div class="card card-default">
-         
+            
           <!-- /.card-header -->
           <div class="card-body">
             <form id="newproject" action="newproject.php" method="POST">
@@ -287,7 +285,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               ?>
               <!--<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>Write a valid password</div>
                /.row -->
-              <div class="row">
+               <div class="row">
                 <div class="col-12">
                   <a href="account.php" class="btn btn-secondary">Cancel</a>
                   <input type="submit" value="Create new Porject" class="btn btn-success float-right">
@@ -296,9 +294,8 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
             </form>
           </div>
         
-        </div>
-              <!-- /.card-body -->
-            </div>
+        
+            
             <!-- /.card -->
           </div>
         </div>

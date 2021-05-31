@@ -162,7 +162,15 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 <p><b>Editor</b></p>
               </a>
             </li>
-            
+            <li class="nav-item">
+              <a href="support.php" class="nav-link">
+                <i class="nav-icon fas fa">?</i>
+                <p>
+                Support
+                  
+                </p>
+              </a>
+            </li>
            
           <li class="nav-item">
             <a href="exit.php" class="nav-link">

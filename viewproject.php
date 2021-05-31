@@ -182,6 +182,15 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </a>
             </li>
             <li class="nav-item">
+              <a href="support.php" class="nav-link">
+                <i class="nav-icon fas fa">?</i>
+                <p>
+                Support
+                  
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="exit.php" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
@@ -211,6 +220,15 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                 <i class="nav-icon far fa-plus-square"></i>
                 <p>
                   Buy entrys
+                  
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="support.php" class="nav-link">
+                <i class="nav-icon fas fa">?</i>
+                <p>
+                Support
                   
                 </p>
               </a>
@@ -279,8 +297,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
               </div>
               <!-- /.card-header -->
               
-              <div class="card card-default">
-              
                 <!-- /.card-header -->
                 <div class="card-body">
                   <form id="project" action="">
@@ -315,7 +331,6 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   </form>
                 </div>
               
-              </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->

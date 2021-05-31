@@ -86,14 +86,22 @@ public function newProject(){
 			$mysql->query($query);
 
 			$idnew= ($mysql->insert_id);
+
+			
+			
+			
+			$numarts = $numarts - $this->cantidad;
+			$query    = "UPDATE tb_users SET numarticles=$numarts WHERE tb_users.id='".$IDusr. "';";
+			$mysql->query($query);
+
 			$mysql->close();
-			
-			
-			
+
+			echo    "<script>
+							
+							  window.location.replace('./viewproject.php?id=$idnew'); 
+							  </script>";
 			//si todo esta ok, lo redirecciona a viewproject.php
-			echo    "<script type=\"text/javascript\">
-								window.location=./../viewproject.php?id='".$idnew."'\"
-								</script>";
+			
 		}
 	}else{
 		$this->mensaje='<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h6><i class="icon fas fa-ban"></i> Error!</h6>You do not have enough articles. <a style=""href="buy-entrys.php" class="">Buy more</a><br><br></div>';
