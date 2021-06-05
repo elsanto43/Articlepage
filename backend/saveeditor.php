@@ -68,20 +68,26 @@
                             $selected = $_POST['selected'];
                             $currproject = userF::has_pending_proyect($IDusr);
                             $published = userF::get_published_articles($currproject);
+                            $arrpub = explode('-', $published);
+                            $numpub = count($arrpub);
+                            $numarts = userF::get_numarts_project($currproject);
 
                             if ($selected > 0) {
+                                
                                 
                                 $query    = "UPDATE
                                         tb_articles SET state=1, article = '".$_POST['mydata']."'
                                         , name = '".$_POST['articlename']."', project_id='$currproject'
                                         WHERE tb_articles.id='".$selected. "';";
 
-                                        $mysql->query($query);
-                                        if (strlen($published) > 0) {
-                                            $published = $published . "-$selected";
-                                        }else{
-                                            $published = $selected;
-                                        }
+                                $mysql->query($query);
+
+                                if (strlen($published) > 0) {
+                                    $published = $published . "-$selected";
+                                }else{
+                                    $published = $selected;
+                                }
+
                             }else{ //Se crea un nuevo articulo
                                 $query = "INSERT INTO tb_articles (`id`, `name`, `state`, `project_id`, `user_id`, `article`) 
                                             VALUES (NULL, '".$_POST['articlename']."', '1', '$currproject', '$IDusr', '".$_POST['mydata']."');";
@@ -99,8 +105,8 @@
                             
                             $query = "UPDATE tb_projects SET tb_projects.ispublished='1', tb_projects.published='$published' WHERE tb_projects.id='$currproject'";
                             $mysql->query($query);
-                            echo "Llego4" . $query;
-                            //header("location: ./../editor.php");
+                            
+                            header("location: ./../editor.php");
                         }
                     }
                     

@@ -304,7 +304,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header">
-                        <h3 class="card-title">Current project (ID: <?php $pend = userF::has_pending_proyect($IDusr); echo "$pend)"?> </h3>
+                        <h3 class="card-title">Current project (ID: <?php $pend = userF::has_pending_proyect($IDusr); echo "$pend)";?> </h3>
 
                         <div class="card-tools">
                           <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -354,6 +354,21 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
       </div>
     </section>
     <!-- /.content -->
+    <?php if ($pend <> 0) {?> 
+       <!-- Si tiene un proyecto pendiente, mostramos los articulos que ya fueron publicados. -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Published articles</h1>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+        <br>
+        <?php echo userF::showProjectArticlesEditor($pend);?>
+      </section>
+
+      <?php }?>
   </div>
   <!-- /.content-wrapper -->
 

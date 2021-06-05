@@ -864,6 +864,19 @@ class userF {
             }
     }
 
+    public static function get_numarts_project($projectid, $mysql) {
+        $query    = "SELECT tb_projects.num_articles FROM tb_projects WHERE tb_projects.id='$projectid';";
+            $respuesta = $mysql->query($query);
+            //Aqui determinamos con la instruccion if
+            //la consulta generada, si mayor a cero
+            //retornamos el valor verdadero
+            //por el contrario mesaje de error
+            if($respuesta->num_rows>0){
+                $row  = $respuesta->fetch_row();
+                return $row[0];
+            }
+    }
+
     public static function get_article_user($articleid, $mysql) {
         $query    = "SELECT tb_articles.user_id FROM tb_articles WHERE tb_articles.id='$articleid';";
             $respuesta = $mysql->query($query);

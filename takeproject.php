@@ -52,7 +52,7 @@
                             $mysql->query($query); //seteamos el id de proyecto pendiente en la data del usuario
                             
                             $query =  "UPDATE
-                            tb_projects SET
+                            tb_projects SET published='', ispublished='0',
                             editor_id = " . $IDusr. "
                              WHERE tb_projects.id='".$_GET['id']. "';";
                             $mysql->query($query); //el id del editor se modifica en la tabla de proyectos
