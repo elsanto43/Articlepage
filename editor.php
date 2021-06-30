@@ -300,12 +300,18 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
                       echo userF::get_text_saved($IDusr, $selected);
                     }?>
                 </textarea>
+                <?php 
+                $currproject = userF::has_pending_proyect($IDusr);
+                        $published = userF::get_published_articles($currproject);
+                        $arrpub = explode('-', $published);
+                        $numpub = count($arrpub);
+                        $numarts = userF::get_numarts2_project($currproject);?>
 
                 <button name="boton" value="a" type="submit" id="saveData" style="width:48%; float:left;" class="btn btn-primary float-center">Save</button> 
                 
                 <a href="account.php" style="width:48%; float: right;" class="btn btn-secondary float-center">Cancel</a>
                 
-                <?php if ($pendant <> 0) { echo '<button name="boton" value="b" type="submit" id="saveData" style="margin-top:14px; width:100%; float:left;" class="btn btn-success float-center">Publish article</button> ';} ?>
+                <?php if($numarts > $numpub){ if ($pendant <> 0) { echo '<button name="boton" value="b" type="submit" id="saveData" style="margin-top:14px; width:100%; float:left;" class="btn btn-success float-center">Publish article</button> ';}} ?>
                 
                 
               </form>

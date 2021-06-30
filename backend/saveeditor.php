@@ -35,6 +35,13 @@
                     if(!$mysql){
                         
                     }else{
+                        
+                        $selected = $_POST['selected'];
+                        $currproject = userF::has_pending_proyect($IDusr);
+                        $published = userF::get_published_articles($currproject);
+                        $arrpub = explode('-', $published);
+                        $numpub = count($arrpub);
+                        $numarts = userF::get_numarts_project($currproject, $mysql);
                         if ($_POST['boton'] == "a") { //El boton solo guarda el borrador, no publica el articulo
                         //consulta SQL para vereficar si existe tal correo del
                         //usario que introdujo 
@@ -54,6 +61,7 @@
                                             VALUES (NULL, '".$_POST['articlename']."', '$IDusr', '".$_POST['mydata']."');";
                                 $mysql->query($query);
                                 $newid = $mysql->insert_id;
+                                
                                 header("location: ./../editor.php?edit=$newid");
                             }
                             
@@ -65,13 +73,7 @@
                             
                         }else{ //boton b, publica el articulo, para ser aprobado por el administrador
                             
-                            $selected = $_POST['selected'];
-                            $currproject = userF::has_pending_proyect($IDusr);
-                            $published = userF::get_published_articles($currproject);
-                            $arrpub = explode('-', $published);
-                            $numpub = count($arrpub);
-                            $numarts = userF::get_numarts_project($currproject);
-
+                            
                             if ($selected > 0) {
                                 
                                 
@@ -87,24 +89,32 @@
                                 }else{
                                     $published = $selected;
                                 }
-
+                                
+                                
                             }else{ //Se crea un nuevo articulo
-                                $query = "INSERT INTO tb_articles (`id`, `name`, `state`, `project_id`, `user_id`, `article`) 
+                                if ($numarts > $numpub) {
+                                    $query = "INSERT INTO tb_articles (`id`, `name`, `state`, `project_id`, `user_id`, `article`) 
                                             VALUES (NULL, '".$_POST['articlename']."', '1', '$currproject', '$IDusr', '".$_POST['mydata']."');";
-                                $mysql->query($query);
-                                $newid = $mysql->insert_id;
+                                    $mysql->query($query);
+                                    $newid = $mysql->insert_id;
 
-                                if ((strlen($published) > 0) & ($published <> '0')) {
-                                    $published = $published . "-$newid";
-                                }else{
-                                    $published = $newid;
+                                    if ((strlen($published) > 0) & ($published <> '0')) {
+                                        $published = $published . "-$newid";
+                                    }else{
+                                        $published = $newid;
+                                    }
+
+                                    
                                 }
+                                
                             }
-
-                            //tambien actualizamos la tabla de proyectos, agregandolo a los articulos publicados.
                             
                             $query = "UPDATE tb_projects SET tb_projects.ispublished='1', tb_projects.published='$published' WHERE tb_projects.id='$currproject'";
                             $mysql->query($query);
+
+                            //tambien actualizamos la tabla de proyectos, agregandolo a los articulos publicados.
+                            
+                            
                             
                             header("location: ./../editor.php");
                         }

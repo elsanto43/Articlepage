@@ -863,7 +863,20 @@ class userF {
                 return $row[0];
             }
     }
-
+    public static function get_numarts2_project($projectid) {
+        $confi=new Datos_conexion();
+        $mysql=new mysqli($confi->host(),$confi->usuario(),$confi->pasword(),$confi->DB());
+        $query    = "SELECT tb_projects.num_articles FROM tb_projects WHERE tb_projects.id='$projectid';";
+            $respuesta = $mysql->query($query);
+            //Aqui determinamos con la instruccion if
+            //la consulta generada, si mayor a cero
+            //retornamos el valor verdadero
+            //por el contrario mesaje de error
+            if($respuesta->num_rows>0){
+                $row  = $respuesta->fetch_row();
+                return $row[0];
+            }
+    }
     public static function get_numarts_project($projectid, $mysql) {
         $query    = "SELECT tb_projects.num_articles FROM tb_projects WHERE tb_projects.id='$projectid';";
             $respuesta = $mysql->query($query);
